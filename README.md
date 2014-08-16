@@ -123,7 +123,7 @@
 
         > &nbsp;
 
-        > the option to remove the _whole header_ removes whole data objects from these arrays. Not only are the cookie values removed (which are the cause for security concerns in passing around _unsanitized_ HAR data files), but all trace of their existence is lost as well.
+        > the option to remove the _whole header_ removes whole data objects from these arrays. Not only are the cookie values removed (which are the cause for security concern in passing around _unsanitized_ HAR data files), but all trace of their existence is lost as well.
 
         > the option to remove the _value only_ retains information about cookies that were present during the logged session:
           * their names
