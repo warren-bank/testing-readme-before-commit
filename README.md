@@ -113,6 +113,7 @@
         - [ ] whole header
         - [x] value only
 
+
       > cookie data is stored in:
         * log.entries[].request.cookies
         * log.entries[].request.headers
