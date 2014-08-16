@@ -106,8 +106,8 @@
       with the intention of retaining the desired existing functionality while reducing the codebase.
     * This is the first modification intended to add new/enhanced functionality.
     * A secondary download button has been added to the toolbar.
-      It differs from the original, in that its behavior is to export/save a __sanitized__ copy of the HAR data.
-      Exactly what data is filtered/removed from the original can be configured in _user preferences_.
+      It differs from the original, in that its behavior is to export/save a _sanitized_ copy of the HAR data.
+    * Exactly what data is filtered/removed from the original can be configured in _user preferences_.
     * In this initial version, the only filtering options are:
       * remove cookies:
         - [ ] whole header
