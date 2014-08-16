@@ -112,6 +112,7 @@
       * remove cookies:
         - [ ] whole header
         - [x] value only
+
         &nbsp;
 
       > cookie data is stored in:
