@@ -54,15 +54,15 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
     provides a user the added ability to explicitly override the normal detection logic.
 
     This can be useful in a number of different circumstances. For instance:
-      * a web server response is known to contain JSON data,
-        however the 'content-type' headers are too generic to pass normal detection.
+      * A web server response is known to contain JSON data;
+        however, the 'content-type' headers are too generic to pass normal detection.
         This would normally be the result of a misconfigured web server,
         or poorly written backend script.
 
         > the solution would be to manually append the `control token` that explicitly signals
           to the add-on that it should take action: `#JSON-DataView`
 
-      * another scenario (that I [recently ran into](https://github.com/warren-bank/moz-harviewer)) is when two different add-ons
+      * Another scenario (that I [recently ran into](https://github.com/warren-bank/moz-harviewer)) is when two different add-ons
         are both triggered to take action on the same page.
 
         JSON is a very general-purpose way to structure/serialize/transmit data.
