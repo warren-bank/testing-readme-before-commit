@@ -183,23 +183,21 @@ hello_world([])
 
     > * 'content-type' of response === 'application/javascript'
 
-    > * __IS NOT__ acted upon by this addon, since the criteria for the detection methodology are not met
+    > * __IS NOT__ acted upon
+        * the criteria for the detection methodology are not met
+        * any of the following methods could be used to satisfy these criteria:
+          * wrap the response in a JSONP callback <sub>(requires cooperation server-side)</sub>:
+            > http://headers.jsontest.com/?mime=2&callback=hello_world
 
-    > * any of the following methods could be used to satisfy these criteria:
-
-    >   * wrap the response in a JSONP callback <sub>(requires cooperation server-side)</sub>:
-
-    >     > http://headers.jsontest.com/?mime=2&callback=hello_world
-
-    >   * add a `control token` to the hash:
-
-    >     > http://headers.jsontest.com/?mime=2#JSON-DataView
+          * add a `control token` to the hash:
+            > http://headers.jsontest.com/?mime=2#JSON-DataView
 
   * http://headers.jsontest.com/?mime=3
 
     > * 'content-type' of response === 'text/javascript'
 
-    > * __IS NOT__ acted upon; same work-around methods could be used (as in the earlier example)
+    > * __IS NOT__ acted upon
+        * same work-around methods could be used (as in the earlier example)
 
   * http://headers.jsontest.com/?mime=4
 
@@ -228,7 +226,8 @@ hello_world([])
 
     > * 'content-type' of response === 'text/plain'
 
-    > * __IS NOT__ acted upon; same work-around methods could be used (as in the earlier example)
+    > * __IS NOT__ acted upon
+        * same work-around methods could be used (as in the earlier example)
 
 ## License
   > [GPLv3](http://www.gnu.org/licenses/gpl-3.0.txt)
