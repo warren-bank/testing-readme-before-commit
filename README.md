@@ -51,7 +51,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
     After the format of the response is validated, the parameter string is extracted and treated as a string of JSON data.
 
   *	In the detection methodology, the inspection of the location hash for special `control tokens`
-    allows a user the added ability to explicitly override the normal detection logic.
+    provides a user the added ability to explicitly override the normal detection logic.
 
     This can be useful in a number of different circumstances. For instance:
       * a web server response is known to contain JSON data,
@@ -96,6 +96,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
         * note that:
             * order of the `control tokens` doesn't matter
             * they are both case insensitive
+
               > the pretty capitalization is just for the README
 
 ## User Preferences:
