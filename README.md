@@ -186,9 +186,9 @@ hello_world([])
     > * __IS NOT__ acted upon
         * the criteria for the detection methodology are not met
         * any of the following methods could be used to satisfy these criteria:
-          * wrap the response in a JSONP callback <sub>(requires cooperation server-side)</sub>:
+          * wrap the response in a JSONP callback <sub>(requires cooperation server-side)</sub>:<br>
                 http://headers.jsontest.com/?mime=2&callback=hello_world
-          * add a `control token` to the hash:
+          * add a `control token` to the hash:<br>
                 http://headers.jsontest.com/?mime=2#JSON-DataView
 
   * http://headers.jsontest.com/?mime=3
