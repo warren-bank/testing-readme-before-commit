@@ -204,24 +204,24 @@ hello_world([])
   * http://headers.jsontest.com/?mime=4
 
     > 'content-type' of response === 'text/html'
-      * __IS NOT__ acted upon.
-      * This is an unsupported 'content-type'.
-      * My understanding of how add-ons work within the larger application is very limited.
-        Early on, I quickly worked through enough of the boilerplate framework
-        that I felt I understood what was required to hook into responses of a
-        particular 'content-type'. From that time on, all of my add-on development
-        was focused on functionality that could be applied to a chosen group of 'content-types'.
-      * Previously, I had said that there's no available work-around for this request.
-        This comment was based on my limited understanding. Actual testing has proven me wrong.
-      * I'm surprised to learn that a `control token` __CAN__ be added to the hash of this URL,
-        and the add-on will take action on the response.
-      * I'll be honest, I can't explain why the add-on is being invoked on this page.
-        However, the conclusion that we have to draw is that the add-on will be invoked on all responses.
-      * The add-on is written to short-circuit (exit immediately) unless some very specific conditions are met.
-        So this won't prove to be any kind of performance suck.
-      * It's actually a very pleasant surprise.
-        It significantly broadens the scope of when/how this add-on can be used.
-      * <sub>(If anybody with a deeper understanding of "nsIStreamConverter" components can explain what's going on here, please feel free to create an issue and share your insight. Thanks!)</sub>
+        * __IS NOT__ acted upon.
+        * This is an unsupported 'content-type'.
+        * My understanding of how add-ons work within the larger application is very limited.
+          Early on, I quickly worked through enough of the boilerplate framework
+          that I felt I understood what was required to hook into responses of a
+          particular 'content-type'. From that time on, all of my add-on development
+          was focused on functionality that could be applied to a chosen group of 'content-types'.
+        * Previously, I had said that there's no available work-around for this request.
+          This comment was based on my limited understanding. Actual testing has proven me wrong.
+        * I'm surprised to learn that a `control token` __CAN__ be added to the hash of this URL,
+          and the add-on will take action on the response.
+        * I'll be honest, I can't explain why the add-on is being invoked on this page.
+          However, the conclusion that we have to draw is that the add-on will be invoked on all responses.
+        * The add-on is written to short-circuit (exit immediately) unless some very specific conditions are met.
+          So this won't prove to be any kind of performance suck.
+        * It's actually a very pleasant surprise.
+          It significantly broadens the scope of when/how this add-on can be used.
+        * <sub>(If anybody with a deeper understanding of "nsIStreamConverter" components can explain what's going on here, please feel free to create an issue and share your insight. Thanks!)</sub>
 
   * http://headers.jsontest.com/?mime=5
 
