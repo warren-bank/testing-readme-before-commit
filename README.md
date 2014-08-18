@@ -203,8 +203,9 @@ hello_world([])
 
   * http://headers.jsontest.com/?mime=4
 
-    > 'content-type' of response === 'text/html'
-    >   * __IS NOT__ acted upon.
+    > * 'content-type' of response === 'text/html'
+
+    > * __IS NOT__ acted upon.
         * This is an unsupported 'content-type'.
         * My understanding of how add-ons work within the larger application is very limited.
           Early on, I quickly worked through enough of the boilerplate framework
