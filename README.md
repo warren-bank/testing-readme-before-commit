@@ -124,7 +124,7 @@
 
   * clicking on a `selectable` row's `select_handle`, without any modifier key(s):<br>
     * deselects all rows
-    * selects the clicked row,
+    * selects the clicked row,<br>
       which will now serve as the `range_anchor`
 
   * clicking on a `selectable` row's `select_handle`, while pressing the `Ctrl` key:<br>
@@ -138,13 +138,13 @@
 
   * clicking on a `selectable` row's `select_handle`, while pressing the `Shift` key:<br>
     * deselects all rows
-    * selects the range between the `range_anchor` and the clicked row,
+    * selects the range between the `range_anchor` and the clicked row,<br>
       which will now serve as the `range_endpoint`
 
   * clicking on a `selectable` row's `select_handle`, while pressing the `Shift` and `Ctrl` keys:<br>
     * retains the selected state of all rows that are not in the range between the `range_anchor` and the `range_endpoint`
     * deselects all rows in the range between the `range_anchor` and the `range_endpoint`
-    * selects the range between the `range_anchor` and the clicked row,
+    * selects the range between the `range_anchor` and the clicked row,<br>
       which will now serve as the `range_endpoint`
 
 ###### Usage of the `up arrow` &#8593; or `down arrow` &#8595; key, optionally with `Shift` and/or `Ctrl` modifier key(s)
