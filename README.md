@@ -106,7 +106,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
   * syntax highlighting:
     * on/off toggle
 
-      on: Builds an HTML DOM structure that supports presenting the data within a collapsible tree.
+      on: Builds an HTML DOM structure that supports presenting the data within a collapsible tree.<br>
       off: Filters the JSON data through `js-beautify`, and outputs into a `<pre>` DOM element.
 
       > default: on
@@ -126,7 +126,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
   * css customizations:
     * font-family
 
-      the stylesheet assigns a default value.
+      the stylesheet assigns a default value.<br>
       this value is optional; if present, it will override the stylesheet.
 
       > default: ''
@@ -153,11 +153,11 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
 
       units: em
 
-      > *note:*
-      > 1.5em is ADDED to the value specified through this setting.
-      > This is the width required to ensure the expand/collapse button can be properly displayed.
-
       > default: '1'
+
+      > _NOTE:_<br>
+      > 1.5em is ADDED to the value specified through this setting.<br>
+      > This is the width required to ensure the expand/collapse button can be properly displayed.
 
 ## Examples
 
