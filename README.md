@@ -1,191 +1,280 @@
-### [jquery.table_multi_row_selectable_drag_drop.js](https://github.com/warren-bank/jquery-table-multi-row-selectable-drag-drop)
+# JSON-DataView
+Firefox add-on that displays JSON data in a collapsible tree structure with syntax highlights.
 
-### Summary
+## Screenshot
 
-  * jQuery plugin that can be used to enhance HTML `table` elements.
-  * multiple rows may be selected.
-  * selected rows may be dragged.
-  * when multiple non-adjacent rows are dragged as a single unit:
-    * the absolute position of each row within the table is changed
-    * the order of the selected rows, and their position relative to one another, remains unchanged
+![JSONP response in Google data feed](https://raw.githubusercontent.com/warren-bank/moz-json-data-view/screenshots/01.png)
 
-### Example
+## Summary
 
-  * [demo.html](http://warren-bank.github.io/jquery-table-multi-row-selectable-drag-drop/demo.html)
+  * [jsonTreeViewer](https://github.com/summerstyle/jsonTreeViewer) served as a solid starting point for creating a DOM structure from JSON data
 
-### Options <sub>(with default values)</sub>
+      > nicely coded
+
+  * [highlight.js](https://github.com/isagalaev/highlight.js) is used to provide syntax highlighting to the DOM structure
+
+  * [beautify.js](https://github.com/beautify-web/js-beautify/blob/master/js/lib/beautify.js) is used to add whitespace for readability when syntax highlighting is turned off.
+
+## Detection methodology
+
+  * This add-on will modify the display of all server responses (or local files) that satisfy all of the following criteria:
+    * none of the following short-circuit conditions are true:
+      * the location protocol is 'view-source:'
+      * the location hash contains: `No-JSON-DataView`
+
+        > notes:
+        > * not case sensitive
+        > * can be combined with other hash tokens by using one of the separators: `/,`
+
+    * either:
+      * the HTTP header 'content-type' is one of:
+        * 'application/json'
+        * 'text/json'
+        * 'text/x-json'
+      * or both must be true:
+        * the HTTP header 'content-type' is one of:
+          * 'application/javascript'
+          * 'application/x-javascript'
+          * 'text/javascript'
+          * 'text/plain'
+        * and one of the following additional conditions are met:
+          * the location pathname ends with '.json'
+          * the location querystring contains 'callback=',
+            and the response is structured as a JSONP callback function
+          * the location hash contains: `JSON-DataView`
+
+## Comments
+
+  * It's become pretty standard practice for jsonp responses to contain javascript comments.
+    The comments serve as a form of protection against an Adobe Flash Player exploit that uses jsonp to bypass the same-origin security policy. This [attack](https://github.com/mikispag/rosettaflash) is known as [Rosetta Flash](http://miki.it/blog/2014/7/8/abusing-jsonp-with-rosetta-flash/).
+
+  * This addon will ignore both leading and trailing comments (in both `//` and `/* */` formats)
+    when processing the response to determine whether it contains a valid jsonp callback function.
+    After the format of the response is validated, the parameter string is extracted and treated as a string of JSON data.
+
+  *	In the detection methodology, the inspection of the location hash for special `control tokens`
+    provides a user the added ability to explicitly override the normal detection logic.
+
+    This can be useful in a number of different circumstances. For instance:
+      * A web server response is known to contain JSON data;
+        however, the 'content-type' headers are too generic to pass normal detection.
+        This would normally be the result of a misconfigured web server,
+        or poorly written backend script.
+
+        > the solution would be to manually append the `control token` that explicitly signals
+          to the add-on that it should take action: `#JSON-DataView`
+
+      * Another scenario (that I [recently ran into](https://github.com/warren-bank/moz-harviewer)) is when two different add-ons
+        are both triggered to take action on the same page.
+
+        JSON is a very general-purpose way to structure/serialize/transmit data.
+
+        There are many `domain specific` data formats that are defined by a JSON schema.
+        One such example is the [HTTP Archive format](http://www.softwareishard.com/blog/har-12-spec/).
+
+        If there's an add-on that specifically targets one such format,
+        then whether or not there is the potential for conflict between the two add-ons
+        running at the same time depends on the particular data format.
+        * If it has been assigned its own 'content-type' (and if servers tend to use it),
+          then there won't be any conflict.
+        * However, if this data format is sent with a generic JSON-ish 'content-type',
+          then both add-ons will most likely be trying to detect the same conditions.
+
+        This is where having the option to manually add `control tokens` is a very good thing.
+
+        Concrete example:
+        * both add-ons are installed:
+          * [JSON-DataView](https://github.com/warren-bank/moz-json-data-view)
+          * [HTTP Archive Viewer](https://github.com/warren-bank/moz-harviewer)
+        * a HAR file is requested from a server
+        * the 'content-type' of the response is: `application/json`
+        * to view the HAR data in a rich visualization tool
+          (with charts and graphs, etc) using the `HTTP Archive Viewer` add-on,
+          the following `control tokens` could be used:
+            * http://httparchive.webpagetest.org/export.php?test=140801_0_8JH&run=1&cached=0&pretty=1#HTTP-Archive-Viewer/No-JSON-DataView
+        * conversely, to take a deep dive into the raw data using the `JSON-DataView` add-on,
+          the following `control tokens` could be used:
+            * http://httparchive.webpagetest.org/export.php?test=140801_0_8JH&run=1&cached=0&pretty=1#No-HTTP-Archive-Viewer/JSON-DataView
+        * note that:
+            * order of the `control tokens` doesn't matter
+            * they are both case insensitive
+
+              > the pretty capitalization is just for the README
+
+## User Preferences:
+
+  * syntax highlighting:
+    * on/off toggle
+
+      on: Builds an HTML DOM structure that supports presenting the data within a collapsible tree.
+      off: Filters the JSON data through `js-beautify`, and outputs into a `<pre>` DOM element.
+
+      > default: on
+
+    * expand all nodes
+
+      initialize all collapsible tree nodes to an expanded state (during page load)?
+
+      > default: false
+
+    * choice of color scheme
+
+      options consist of those provided by [highlight.js](https://github.com/isagalaev/highlight.js/tree/master/src/styles)
+
+      > default: 'solarized_dark'
+
+  * css customizations:
+    * font-family
+
+      the stylesheet assigns a default value.
+      this value is optional; if present, it will override the stylesheet.
+
+      > default: ''
+
+    * font-size
+
+      units: px
+
+      > default: '13'
+
+    * line-height
+
+      units: em
+
+      > default: '2'
+
+    * padding around the `<body>`
+
+      units: em
+
+      > default: '1'
+
+    * width of indentation for expanded children
+
+      units: em
+
+      > *note:*
+      > 1.5em is ADDED to the value specified through this setting.
+      > This is the width required to ensure the expand/collapse button can be properly displayed.
+
+      > default: '1'
+
+## Examples
+
+  > URLs to render in-browser after the add-on has been installed, which illustrate its functionality
+
+  * http://graph.facebook.com/coca-cola?callback=hello_world
+
+    > * Facebook's graph API
+
+    > * JSONP request/response
+
+    > * 'content-type' of response === 'application/json'
+
+      >> _note: this should be 'application/javascript' or 'text/javascript'_
+
+    > * format of response content:
 
 ```javascript
-{
-    "element_selectors"     : {
-        "table_rows"            : {
-            // whitelist
-            "selectable"            : "tr",
-            "draggable"             : "tr",
-            "droppable"             : "tr",
-            // blacklist
-            "not_selectable"        : "tr.noselect",
-            "not_draggable"         : "tr.nodrag",
-            "not_droppable"         : "tr.nodrop"
-        },
-        "table_cells"           : {
-            "drag_handle"           : "td.drag_handle",
-            "select_handle"         : "td:not(.drag_handle)"
-        }
-    },
-    "dynamic_css_classes"   : {
-        "table"                 : {
-            "has_focus"             : "focused"
-        },
-        "table_rows"            : {
-            "is_selected"           : "selected",
-            "is_dragging"           : "dragging"
-        }
-    },
-    "behavior"              : {
-        "drag_sensitivity"          : 10,
-        "autoscroll_gutter"         : 10,
-        "enable_unselected_drag"    : false
-    },
-    "event_handlers"        : {
-        "enter_key"                 : function($selected_rows, $table, options){},
-        "double_click"              : function($selected_row,  $table, options){ if (typeof options.event_handlers.enter_key !== 'function'){return;} options.event_handlers.enter_key($selected_row, $table, options); },
-        "drag_complete"             : function($selected_rows, $table, options){}
-    }
-}
+/**/ hello_world({});
 ```
 
-  * `options.element_selectors.table_rows`
-    * sizzle selectors to filter `$( table.rows )`
-    * used to enable/disable functionality
-    * value may be:
-      - _string_
-      - _array of string(s)_
-        * these selectors are generally used in 2 scenarios:
-          1. during initial event binding to `td` handles.
-             * for each type of `td` handle:
-               * rows are filtered
-               * matching cells are bound to an event handler
-          2. at runtime, when these bound event handlers are triggered.
-        * if, for some reason, there's a use-case in which runtime selectors
-          need to be a superset of those selectors used during initialization,
-          then the _array of string(s)_ format can be used.
-        * the first array element is the only selector used during initialization
-        * all strings are used at runtime
-        * possible reasons this may be desirable:
-          * to blacklist rows based on some condition that may change while the page is in use:<br>
-            `["tr.nodrag","tr:focus","tr:first","tr:even","tr:has(.some.dynamic.content)"]`
-          * truthfully, I can't think of a good reason to use this;<br>
-            however, there's no harm in offering the ability (via an obscure syntax that's easy to parse).
+  * http://www.google.com/calendar/feeds/developer-calendar@google.com/public/full?alt=json&callback=hello_world
 
-  * `options.element_selectors.table_cells`
-    * sizzle selectors to find matching table cells within groups of table rows
-      * `select_handle`:<br>
-        `td` elements that a user may click to select the entire row
-      * `drag_handle`:<br>
-        `td` elements that a user may drag to reposition all selected rows within the `table`
+    >  * Google's calendar of developer events
 
-        > a row can only be dragged (via a `drag_handle`) when it is unselected __if__ the following option is enabled:
-        >   `options.behavior.enable_unselected_drag`
+    >  * JSONP request/response
 
-        > for an example, refer to [demo #04](http://warren-bank.github.io/jquery-table-multi-row-selectable-drag-drop/demo.html#demo_04)
+    > * 'content-type' of response === 'text/javascript'
 
-  * `options.dynamic_css_classes`
-    * css classes that will be dynamically added to (and removed from) DOM elements in response to activity by the user.
+    > * format of response content:
 
-  * `options.behavior`
-    * values that can be used to modify the behavior of various aspects of the script:
-      * `drag_sensitivity`:<br>
-        minimum distance (in pixels) an active `drag_handle` must be dragged (vertically) for the script to respond.
-        serves as a throttle to improve performance.
-      * `autoscroll_gutter`:<br>
-        minimum distance (in pixels) an active `drag_handle` can be (vertically) from the top/bottom border of the visible viewport
-        before automatic scrolling occurs.
-      * `enable_unselected_drag`:<br>
-        while no rows are selected, should the user be allowed to drag one (unselected but `draggable`) row using its `drag_handle`(s)?
+```javascript
+// API callback
+hello_world({});
+```
 
-  * `options.event_handlers`
-    * callback functions that allow custom code to run after particular user activities:
-      * `enter_key`:<br>
-         when one or more rows are selected in a table that has `:focus`
-         and the user presses the `Enter` key on the keyboard,
-         this function is called and the `$selected_rows` are passed as a parameter.
-      * `double_click`:<br>
-         when the user double clicks on a table row,
-         this function is called and the `$selected_row` is passed as a parameter.
-      * `drag_complete`:<br>
-         when the user has sucessfully repositioned one or more rows within the table via drag/drop,
-         this function is called and the `$selected_rows` are passed as a parameter.<br>
-         <sub>note: when `options.behavior.enable_unselected_drag` is enabled and in use, `$selected_rows` will match the unselected row.</sub>
+  * http://feeds.delicious.com/v2/json/popular?callback=hello_world
 
-### Notes
+    > * delicious.com data feed; top 10 most popular.. somethings
 
-###### Usage of the `Shift` and/or `Ctrl` key(s) with pointer/touch events
+    > * JSONP request/response
 
-  * clicking on a `selectable` row's `select_handle`, without any modifier key(s):<br>
-    * deselects all rows
-    * selects the clicked row,<br>
-      which will now serve as the `range_anchor`
+    > * 'content-type' of response === 'text/javascript'
 
-  * clicking on a `selectable` row's `select_handle`, while pressing the `Ctrl` key:<br>
-    * retains the selected state of all rows that are not the clicked row
-    * toggles the selected state of the clicked row on/off
-    * if the clicked row becomes selected,
-      then it will now serve as the `range_anchor`.<br>
-      otherwise, the closest `.prev()` selected row will serve as the `range_anchor`.<br>
-      otherwise, the closest `.next()` selected row will serve as the `range_anchor`.<br>
-      otherwise, there is no active `range_anchor`.
+    > * format of response content:
 
-  * clicking on a `selectable` row's `select_handle`, while pressing the `Shift` key:<br>
-    * deselects all rows
-    * selects the range between the `range_anchor` and the clicked row,<br>
-      which will now serve as the `range_endpoint`
+```javascript
+hello_world([])
+```
 
-  * clicking on a `selectable` row's `select_handle`, while pressing the `Shift` and `Ctrl` keys:<br>
-    * retains the selected state of all rows that are not in the range between the `range_anchor` and the `range_endpoint`
-    * deselects all rows in the range between the `range_anchor` and the `range_endpoint`
-    * selects the range between the `range_anchor` and the clicked row,<br>
-      which will now serve as the `range_endpoint`
+  * https://api.twitter.com/1.1/statuses/user_timeline.json
 
-###### Usage of the `up arrow` &#8593; or `down arrow` &#8595; key, optionally with `Shift` and/or `Ctrl` modifier key(s)
+    > * response contains JSON data
 
-  * pressing an arrow key, without any modifier key(s):<br>
-    * within the table that has `:focus`, if:
-      * one or more rows are selected that are also `draggable`
-      * foreach of these rows:<br>
-        the adjacent row in the direction of the arrow key is `droppable`<br>
-        <sub>(ie: `up arrow` => row above, `down arrow` => row below)</sub>
-    * then:
-      * a drag/drop occurs, repositioning each of the selected/`draggable` rows by a unit of one row&hellip;
-        in the vertical direction indicated by the arrow key.
+    > * 'content-type' of response === 'application/json'
 
-  * pressing an arrow key, with any combination of the `Shift` and/or `Ctrl` keys:<br>
-    * within the table that has `:focus`, if:
-      * the `table` has an active `range_anchor`
-    * then:
-      * the event is processed as though the user had clicked on the adjacent row with __both__ the `Shift` and `Ctrl` keys pressed.
+  * http://gdata.youtube.com/feeds/api/standardfeeds/most_popular?alt=json&v=2
 
-### FAQs
+    > * response contains JSON data
 
-###### Why such a long, hard to remember name?
+    > * 'content-type' of response === 'application/json'
 
-  * This isn't the kind of plugin that gets called frequently,
-    so I opted for verbose and descriptive.
+  * http://headers.jsontest.com/?mime=1
 
-  * If for some reason a user __really__ wants it to be shorter,
-    then simply create an alias for it:
+    > * response contains JSON data
 
-    ```javascript
-    (function($, new_jq_plugin_alias){
-        $.fn[new_jq_plugin_alias] = $.fn.table_multi_row_selectable_drag_drop;
-    })(jQuery, "tblDnD");
+    > * 'content-type' of response === 'application/json'
 
-    jQuery(document).ready(function($){
-        $('table#foo').tblDnD();
-    });
-    ```
+  * http://headers.jsontest.com/?mime=2
 
-### License
+    > * 'content-type' of response === 'application/javascript'
 
-  > [GPLv2](http://www.gnu.org/licenses/gpl-2.0.txt)
+    > * __IS NOT__ acted upon
+        * the criteria for the detection methodology are not met
+        * any of the following methods could be used to satisfy these criteria:
+          * wrap the response in a JSONP callback <sub>(requires cooperation server-side)</sub>:<br>
+                http://headers.jsontest.com/?mime=2&callback=hello_world
+          * add a `control token` to the hash:<br>
+                http://headers.jsontest.com/?mime=2#JSON-DataView
+
+  * http://headers.jsontest.com/?mime=3
+
+    > * 'content-type' of response === 'text/javascript'
+
+    > * __IS NOT__ acted upon
+        * same work-around methods could be used (as in the earlier example)
+
+  * http://headers.jsontest.com/?mime=4
+
+    > * 'content-type' of response === 'text/html'
+
+    > * __IS NOT__ acted upon.
+        * This is an unsupported 'content-type'.
+        * My understanding of how add-ons work within the larger application is very limited.
+          Early on, I quickly worked through enough of the boilerplate framework
+          that I felt I understood what was required to hook into responses of a
+          particular 'content-type'. From that time on, all of my add-on development
+          was focused on functionality that could be applied to a chosen group of 'content-types'.
+        * Previously, I had said that there's no available work-around for this request.
+          This comment was based on my limited understanding. Actual testing has proven me wrong.
+        * I'm surprised to learn that a `control token` __CAN__ be added to the hash of this URL,
+          and the add-on will take action on the response.
+        * I'll be honest, I can't explain why the add-on is being invoked on this page.
+          However, the conclusion that we have to draw is that the add-on will be invoked on all responses.
+        * The add-on is written to short-circuit (exit immediately) unless some very specific conditions are met.
+          So this won't prove to be any kind of performance suck.
+        * It's actually a very pleasant surprise.
+          It significantly broadens the scope of when/how this add-on can be used.
+        * <sub>(If anybody with a deeper understanding of "nsIStreamConverter" components can explain what's going on here, please feel free to create an issue and share your insight. Thanks!)</sub>
+
+  * http://headers.jsontest.com/?mime=5
+
+    > * 'content-type' of response === 'text/plain'
+
+    > * __IS NOT__ acted upon
+        * same work-around methods could be used (as in the earlier example)
+
+## License
+  > [GPLv3](http://www.gnu.org/licenses/gpl-3.0.txt)
   > Copyright (c) 2014, Warren Bank
