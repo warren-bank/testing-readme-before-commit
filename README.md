@@ -54,6 +54,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
     * leading validation of the callback function, using any of the patterns:
       * cb && cb(json)
       * typeof cb === 'function' && cb(json)
+
     After the format of the response is validated, the parameter string is extracted from the callback function and treated as a string of JSON data.
 
   *	In the detection methodology, the inspection of the location hash for special `control tokens`
