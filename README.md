@@ -48,9 +48,13 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
   * It's become pretty standard practice for jsonp responses to contain javascript comments.
     The comments serve as a form of protection against an Adobe Flash Player exploit that uses jsonp to bypass the same-origin security policy. This [attack](https://github.com/mikispag/rosettaflash) is known as [Rosetta Flash](http://miki.it/blog/2014/7/8/abusing-jsonp-with-rosetta-flash/).
 
-  * This addon will ignore both leading and trailing comments (in both `//` and `/* */` formats)
-    when processing the response to determine whether it contains a valid jsonp callback function.
-    After the format of the response is validated, the parameter string is extracted and treated as a string of JSON data.
+  * When processing the response to determine whether it contains a valid jsonp callback function,
+    the following javascript statements will be ignored:
+    * leading and trailing comments (in both `//` and `/* */` formats)
+    * leading validation of the callback function, using any of the patterns:
+      * cb && cb(json)
+      * typeof cb === 'function' && cb(json)
+    After the format of the response is validated, the parameter string is extracted from the callback function and treated as a string of JSON data.
 
   *	In the detection methodology, the inspection of the location hash for special `control tokens`
     provides a user the added ability to explicitly override the normal detection logic.
