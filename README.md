@@ -127,7 +127,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
     * font-family
 
       the stylesheet assigns a default value.<br>
-      this value is optional; if present, it will override the stylesheet.
+      this preference is optional; if present, its value will override the stylesheet.
 
       > default: ''
 
