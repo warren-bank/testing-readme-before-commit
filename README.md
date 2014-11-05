@@ -180,7 +180,8 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
       >> _note: this should be 'application/javascript' or 'text/javascript'_
 
     > * format of response content:
-        ```javascript
+
+    >   ```javascript
         /**/ hello_world({});
         ```
 
