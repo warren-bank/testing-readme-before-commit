@@ -180,10 +180,9 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
       >> _note: this should be 'application/javascript' or 'text/javascript'_
 
     > * format of response content:
-
-```javascript
+        ```javascript
         /**/ hello_world({});
-```
+        ```
 
   * http://www.google.com/calendar/feeds/developer-calendar@google.com/public/full?alt=json&callback=hello_world
 
