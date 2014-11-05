@@ -195,10 +195,10 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
 
     > * format of response content:
 
-```javascript
+    >   ```javascript
         // API callback
         hello_world({});
-```
+        ```
 
   * http://feeds.delicious.com/v2/json/popular?callback=hello_world
 
@@ -210,9 +210,9 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
 
     > * format of response content:
 
-```javascript
+    >   ```javascript
         hello_world([])
-```
+        ```
 
   * https://api.twitter.com/1.1/statuses/user_timeline.json
 
@@ -261,8 +261,8 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
         * It's unclear to me whether the internal logic used by the plugin architecture is that add-ons are invoked only on 'text/html' streams; and that this "stream conversion" API is a methodology by which to allow other streams to enter the workflow.
         * All that I can say for certain is that the detection methodology doesn't specifically register this add-on to listen for 'text/html' streams, and yet it is invoked during their page-load processing.
         * This being the case, one of the two aforementioned work-around methods would work:
-          * the presence of a `control token` in the hash will be seen and obeyed
-          * otherwise, the 'content-type' will fail to match a valid value and the add-on will short-circuit (exit immedietely) before the querystring would normally be inspected for a jsonp signature
+          * the presence of a `control token` [in the hash](http://headers.jsontest.com/?mime=4#JSON-DataView) will be seen and obeyed
+          * otherwise, the 'content-type' will fail to match a valid value and the add-on will short-circuit (exit immediately) before the querystring would normally be inspected for [a jsonp signature](http://headers.jsontest.com/?mime=4&callback=hello_world)
 
   * http://headers.jsontest.com/?mime=5
 
