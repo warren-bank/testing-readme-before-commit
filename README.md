@@ -182,7 +182,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
     > * format of response content:
 
     >   ```javascript
-        /**/ hello_world({});
+/**/ hello_world({});
         ```
 
   * http://www.google.com/calendar/feeds/developer-calendar@google.com/public/full?alt=json&callback=hello_world
@@ -196,8 +196,8 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
     > * format of response content:
 
     >   ```javascript
-        // API callback
-        hello_world({});
+// API callback
+hello_world({});
         ```
 
   * http://feeds.delicious.com/v2/json/popular?callback=hello_world
@@ -211,7 +211,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
     > * format of response content:
 
     >   ```javascript
-        hello_world([])
+hello_world([])
         ```
 
   * https://api.twitter.com/1.1/statuses/user_timeline.json
