@@ -76,7 +76,6 @@
       hash of all HTTP headers in original/unmodified response
     * response.headers.updated = {}<br>
       hash of all HTTP headers that the rules array data set (for responses) has incrementally modified at the current point of rules processing.
-
         >  <sub>see additional notes under: `request.headers.updated`</sub>
     * response.status_code [integer]
     * response.charset [string]
