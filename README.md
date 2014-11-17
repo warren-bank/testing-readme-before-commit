@@ -26,15 +26,15 @@
   * regex patterns (shorthand syntax `//` or `new RegExp`)
   * functions
   * "immediately-invoked function expressions" (aka: "self-executing anonymous functions")
-* where a function is present, it will be called each time the rule is evaluated.<br>
-  rules are evaluated for every request and/or response.<br>
-  when functions are called, there will be contextual variables as well as helper functions in scope.<br>
-  the contextual variables will allow the function to return a value that is dependent upon the state of the request/response.<br>
-  the helper functions provide a library for tasks that are commonly used to generate HTTP header values.
-* where an "immediately-invoked function expression" is present, the javascript will only be evaluated once.<br>
-  this occurs when the rules are read from an external file and evaluated into a javascript array of rule objects.<br>
-  when this evaluation occurs, there is no contextual request or response.. so there are no contextual variables in scope.<br>
-  however, the same helper functions that are always available to functions (that are defined within the rules data set) will also be available at the time that the rules data set is initialized/evaluated.
+* where a function is present, it will be called each time the rule is evaluated.
+  * rules are evaluated for every request and/or response.
+  * when functions are called, there will be contextual variables as well as helper functions in scope.
+  * the contextual variables will allow the function to return a value that is dependent upon the state of the request/response.
+  * the helper functions provide a library for tasks that are commonly used to generate HTTP header values.
+* where an "immediately-invoked function expression" is present, the javascript will only be evaluated once.
+  * this occurs when the rules are read from an external file and evaluated into a javascript array of rule objects.
+  * when this evaluation occurs, there is no contextual request or response.. so there are no contextual variables in scope.
+  * however, the same helper functions that are always available to functions (that are defined within the rules data set) will also be available at the time that the rules data set is initialized/evaluated.
 
 ### Contextual Variables (in scope when functions are called)
 
