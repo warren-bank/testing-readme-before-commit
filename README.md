@@ -327,13 +327,13 @@
   * when a request/response observer is notified:
     * the corresponding rules array is processed, sequentially until complete
     * the list of updates are applied to the request/response
-  * the heavy lifting is converting the javascript entered by the user in the rules files into (in-memory) data objects.<br>
-    this occurs infrequently, only as-needed.<br>
-    the size of the (in-memory) data objects will be very small.<br>
-    the performance cost of calling functions within these data objects is trivial.
-    this cost is farther reduced by using a strategy that counts the number of functions within the rules array data set during its validation.<br>
-    if there are no functions, then there's no need to create the variables that would normally be available (in scope) to functions;<br>
-    when it's appropriate to do so, eliminating this step makes the performance cost (of processing the corresponding rules array data set) nearly free.
+  * the heavy lifting is converting the javascript entered by the user in the rules files into (in-memory) data objects.
+    * this occurs infrequently, only as-needed.
+    * the size of the (in-memory) data objects will be very small.
+    * the performance cost of calling functions within these data objects is trivial.
+    * this cost is farther reduced by using a strategy that counts the number of functions within the rules array data set during its validation.
+    * if there are no functions, then there's no need to create the contextual variables that would normally be available (in scope) to functions;
+    * when it's appropriate to do so, eliminating this step makes the performance cost (of processing the corresponding rules array data set) extremely low.
 
 ## License
   > [GPLv2](http://www.gnu.org/licenses/gpl-2.0.txt)
