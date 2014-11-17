@@ -197,7 +197,7 @@
       only because these particular HTTP headers are meaningful to the client (ie: browser) rather than the server.
   > * the syntax used to declare the regex patterns is inconsistent.
       * it uses shorthand when the pattern doesn't contain `/` characters, which would otherwise need to be escaped.
-      * however, using the `RegExp` constructor means that the pattern needs to be passed as a string;<br>
+      * however, using the `RegExp` constructor means that the pattern needs to be passed as a string;
         and this would require that backslashes `\` be escaped.
       * so, do whatever you find is best for you.. just make sure that your code produces a valid javascript RegExp object after evaluation.
   > * usage pattern:
