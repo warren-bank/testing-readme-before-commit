@@ -287,34 +287,33 @@
   * the addon asks to know the file path to each data set.<br>
     one for requests, one for responses.
   * there are two ways to specify a file path:
-    * browse for file, which stores an absolute path
+    * browse for file, which stores an absolute path.
     * manually enter the path, which is parsed in such a way that portable/relative paths are supported.<br>
-      when this path begins with one of the following special tokens,<br>
-      the token will be replaced with the corresponding directory path.
-      The absolute path of these "special directories" may change from FF shutdown to startup,<br>
-      but the relative path will remain valid,<br>
-      and the updated (absolute) file path will be determined.<br>
-      These "special tokens/directories" include:
-      * `{ProfD}`: profile directory
-      * `{CurProcD}`: current working directory (usually the application's installation directory)
-      * `{ProfDefNoLoc}`: %installation%/defaults/profile
-      * `{PrfDef}`: %installation%/defaults/pref
-      * `{Desk}`: user's desktop directory
-      * `{Home}`: user's home directory
-      * `{DfltDwnld}`: default Downloads directory
-      * `{TmpD}`: operating system's temporary files directory
-      Sample interpolation values:
-      * Windows, PortableApps:
-        * `{ProfD}`: `C:\PortableApps\Firefox\Data\profile`
-        * `{CurProcD}`: `C:\PortableApps\Firefox\App\firefox\browser`
-        * `{ProfDefNoLoc}`: `C:\PortableApps\Firefox\App\firefox\browser\defaults\profile`<br>
-          <sub>_(note: directory does not exist)_</sub>
-        * `{PrfDef}`: `C:\PortableApps\Firefox\App\firefox\defaults\pref`
-        * `{Desk}`: `REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v Desktop`
-        * `{Home}`: `%USERPROFILE%`
-        * `{DfltDwnld}`: `%USERPROFILE%\Downloads`
-        * `{TmpD}`: `%TEMP%`
-      So.. if portability is a concern, then the following file paths should work nicely:<br>
+      * when this path begins with one of the following special tokens,<br>
+        the token will be replaced with the corresponding directory path.
+      * The absolute path of these "special directories" may change from FF shutdown to startup,<br>
+        but the relative path will remain valid.
+      * These "special tokens/directories" include:
+        * `{ProfD}`: profile directory
+        * `{CurProcD}`: current working directory (usually the application's installation directory)
+        * `{ProfDefNoLoc}`: %installation%/defaults/profile
+        * `{PrfDef}`: %installation%/defaults/pref
+        * `{Desk}`: user's desktop directory
+        * `{Home}`: user's home directory
+        * `{DfltDwnld}`: default Downloads directory
+        * `{TmpD}`: operating system's temporary files directory
+      * Sample interpolation values:
+        * Windows, PortableApps:
+          * `{ProfD}`: `C:\PortableApps\Firefox\Data\profile`
+          * `{CurProcD}`: `C:\PortableApps\Firefox\App\firefox\browser`
+          * `{ProfDefNoLoc}`: `C:\PortableApps\Firefox\App\firefox\browser\defaults\profile`<br>
+            <sub>_(note: directory does not exist)_</sub>
+          * `{PrfDef}`: `C:\PortableApps\Firefox\App\firefox\defaults\pref`
+          * `{Desk}`: `REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v Desktop`
+          * `{Home}`: `%USERPROFILE%`
+          * `{DfltDwnld}`: `%USERPROFILE%\Downloads`
+          * `{TmpD}`: `%TEMP%`
+      * So.. if portability is a concern, then the following file paths should work nicely:
         * `{ProfD}/moz-rewrite/requests.js`
         * `{ProfD}/moz-rewrite/responses.js`
   * the addon will (optionally) watch these files for updates.
