@@ -152,7 +152,7 @@
 
 ### Examples
 
-1.
+1. #1
 
   >
     ```javascript
@@ -206,7 +206,7 @@
       * then adds rules that apply special-case exceptions
       * finishes by setting rules that apply global exceptions
 
-2.
+2. #2
 
   >
     ```javascript
