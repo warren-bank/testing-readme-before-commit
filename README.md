@@ -152,9 +152,8 @@
 
 ### Examples
 
-> 1.
-
-    ```javascript
+1.
+  > ```javascript
 [
     {
         "url" : /^.*$/,
@@ -192,7 +191,7 @@
 ]
     ```
 
-> #### notes:
+  > #### notes:
     * this example is applicable to a response data specification,<br>
       only because these particular HTTP headers are meaningful to the client (ie: browser) rather than the server.
     * the syntax used to declare the regex patterns is inconsistent.<br>
@@ -205,7 +204,7 @@
       * then adds rules that apply special-case exceptions
       * finishes by setting rules that apply global exceptions
 
-> 2.
+2.
 
 >   ```javascript
 [
