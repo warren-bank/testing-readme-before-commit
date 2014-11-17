@@ -238,7 +238,7 @@
 
 ### User Preferences
 
-  * HTTP Requests (outbound):
+  * _HTTP Requests (outbound)_:
     * on/off toggle
 
       on: intercept HTTP Requests and apply the rules data set to it
@@ -259,7 +259,7 @@
 
       > default: 0 (off)
 
-  * HTTP Responses (inbound):
+  * _HTTP Responses (inbound)_:
     * on/off toggle
 
       on: intercept HTTP Responses and apply the rules data set to it
