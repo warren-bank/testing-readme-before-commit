@@ -39,7 +39,7 @@
 ### Contextual Variables (in scope when functions are called)
 
   * _both requests and responses_
-    * request.original_uri = {}<br>
+    * `request.original_uri` = {}<br>
       keys:
       * `href`: [string] full URI
       * `protocol`: [string] examples: [`http:`,`https:`,`file:`]
@@ -51,17 +51,17 @@
       * `query`: [string]
       * `hash`: [string]
       * `file_ext`: [string]
-    * request.uri = {}
+    * `request.uri` = {}
 
         >  <sub>same keys as: `request.original_uri`</sub>
-    * request.referrer = {}
+    * `request.referrer` = {}
 
         >  <sub>same keys as: `request.original_uri`</sub>
-    * request.method [string]
-    * request.headers = {}
-    * request.headers.unmodified = {}<br>
+    * `request.method` [string]
+    * `request.headers` = {}
+    * `request.headers.unmodified` = {}<br>
       hash of all HTTP headers in original/unmodified request
-    * request.headers.updated = {}<br>
+    * `request.headers.updated` = {}<br>
       hash of all HTTP headers that the rules array data set (for requests) has incrementally modified at the current point of rules processing.
       * this hash is empty before any rules are processed.
       * as rules are processed in sequential order, any rule that matches the requested URL may specify updated HTTP headers which will be applied to this hash object.
@@ -73,45 +73,47 @@
   * _request only_
 
   * _response only_
-    * response.headers = {}
-    * response.headers.unmodified = {}<br>
+    * `response.headers` = {}
+    * `response.headers.unmodified` = {}<br>
       hash of all HTTP headers in original/unmodified response
-    * response.headers.updated = {}<br>
+    * `response.headers.updated` = {}<br>
       hash of all HTTP headers that the rules array data set (for responses) has incrementally modified at the current point of rules processing.
 
         >  <sub>see additional notes under: `request.headers.updated`</sub>
-    * response.status_code [integer]
-    * response.charset [string]
-    * response.content_length [integer]
-    * response.content_type [string]
+    * `response.status_code` [integer]
+    * `response.charset` [string]
+    * `response.content_length` [integer]
+    * `response.content_type` [string]
 
 ### Helper Functions (in scope when functions are called)
 
   * _always available_
-    * atob(string_base64_encoded)<br>
+    * `atob(string_base64_encoded)`<br>
       decodes a string of data which has been encoded using base-64 encoding.
-    * base64_decode(string_base64_encoded)<br>
-      alias for: _atob_
-    * btoa(string_value)<br>
+    * `base64_decode(string_base64_encoded)`
+
+        >  <sub>alias for: `atob`</sub>
+    * `btoa(string_value)`<br>
       creates a base-64 encoded ASCII string from a "string" of binary data.
-    * base64_encode(string_value)<br>
-      alias for: _btoa_
-    * md2(string_value)<br>
+    * `base64_encode(string_value)`
+
+        >  <sub>alias for: `btoa`</sub>
+    * `md2(string_value)`<br>
       returns the result of hashing the input string using the `md2` crypto hash function
-    * md5(string_value)<br>
+    * `md5(string_value)`<br>
       returns the result of hashing the input string using the `md5` crypto hash function
-    * sha1(string_value)<br>
+    * `sha1(string_value)`<br>
       returns the result of hashing the input string using the `sha1` crypto hash function
-    * sha256(string_value)<br>
+    * `sha256(string_value)`<br>
       returns the result of hashing the input string using the `sha256` crypto hash function
-    * sha384(string_value)<br>
+    * `sha384(string_value)`<br>
       returns the result of hashing the input string using the `sha384` crypto hash function
-    * sha512(string_value)<br>
+    * `sha512(string_value)`<br>
       returns the result of hashing the input string using the `sha512` crypto hash function
 
   * _request only_
-    * redirectTo(string_URI)
-    * cancel()
+    * `redirectTo(string_URI)`
+    * `cancel()`
 
   * _response only_
 
