@@ -294,25 +294,26 @@
       * the absolute path of these "special directories" may change from FF shutdown to startup,<br>
         but the relative path will remain valid.
       * these "special tokens/directories" include:
-        * `{ProfD}`: profile directory
-        * `{CurProcD}`: current working directory (usually the application's installation directory)
-        * `{ProfDefNoLoc}`: %installation%/defaults/profile
-        * `{PrfDef}`: %installation%/defaults/pref
-        * `{Desk}`: user's desktop directory
-        * `{Home}`: user's home directory
-        * `{DfltDwnld}`: default Downloads directory
-        * `{TmpD}`: operating system's temporary files directory
+        * `{ProfD}`: <br>profile directory
+        * `{CurProcD}`: <br>current working directory (usually the application's installation directory)
+        * `{ProfDefNoLoc}`: <br>`%installation%/defaults/profile`
+        * `{PrfDef}`: <br>`%installation%/defaults/pref`
+        * `{Desk}`: <br>user's desktop directory
+        * `{Home}`: <br>user's home directory
+        * `{DfltDwnld}`: <br>default Downloads directory
+        * `{TmpD}`: <br>operating system's temporary files directory
       * sample interpolation values:
         * Windows, PortableApps:
-          * `{ProfD}`: `C:\PortableApps\Firefox\Data\profile`
-          * `{CurProcD}`: `C:\PortableApps\Firefox\App\firefox\browser`
-          * `{ProfDefNoLoc}`: `C:\PortableApps\Firefox\App\firefox\browser\defaults\profile`<br>
-            <sub>_(note: directory does not exist)_</sub>
-          * `{PrfDef}`: `C:\PortableApps\Firefox\App\firefox\defaults\pref`
-          * `{Desk}`: `REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v Desktop`
-          * `{Home}`: `%USERPROFILE%`
-          * `{DfltDwnld}`: `%USERPROFILE%\Downloads`
-          * `{TmpD}`: `%TEMP%`
+          * `{ProfD}`: <br>`C:\PortableApps\Firefox\Data\profile`
+          * `{CurProcD}`: <br>`C:\PortableApps\Firefox\App\firefox\browser`
+          * `{ProfDefNoLoc}`: <br>`C:\PortableApps\Firefox\App\firefox\browser\defaults\profile`
+
+              >  <sub>_(note: directory does not exist)_</sub>
+          * `{PrfDef}`: <br>`C:\PortableApps\Firefox\App\firefox\defaults\pref`
+          * `{Desk}`: <br>`REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v Desktop`
+          * `{Home}`: <br>`%USERPROFILE%`
+          * `{DfltDwnld}`: <br>`%USERPROFILE%\Downloads`
+          * `{TmpD}`: <br>`%TEMP%`
       * so.. if portability is a concern, then the following file paths should work nicely:
         * `{ProfD}/moz-rewrite/requests.js`
         * `{ProfD}/moz-rewrite/responses.js`
