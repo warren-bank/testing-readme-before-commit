@@ -51,10 +51,12 @@
       * `query`: [string]
       * `hash`: [string]
       * `file_ext`: [string]
-    * request.uri = {}<br>
-      > <sub>same keys as: `request.original_uri`</sub>
-    * request.referrer = {}<br>
-      > <sub>same keys as: `request.original_uri`</sub>
+    * request.uri = {}
+
+        >  <sub>same keys as: `request.original_uri`</sub>
+    * request.referrer = {}
+
+        >  <sub>same keys as: `request.original_uri`</sub>
     * request.method [string]
     * request.headers = {}
     * request.headers.unmodified = {}<br>
@@ -76,6 +78,7 @@
       hash of all HTTP headers in original/unmodified response
     * response.headers.updated = {}<br>
       hash of all HTTP headers that the rules array data set (for responses) has incrementally modified at the current point of rules processing.
+
         >  <sub>see additional notes under: `request.headers.updated`</sub>
     * response.status_code [integer]
     * response.charset [string]
