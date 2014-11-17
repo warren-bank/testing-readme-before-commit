@@ -194,7 +194,7 @@
     ```
 
   > #### notes:
-    * this example is applicable to a response data specification,<br>
+  > * this example is applicable to a response data specification,<br>
       only because these particular HTTP headers are meaningful to the client (ie: browser) rather than the server.
     * the syntax used to declare the regex patterns is inconsistent.<br>
       it uses shorthand when the pattern doesn't contain `/` characters, which would otherwise need to be escaped.<br>
@@ -230,7 +230,7 @@
     ```
 
   > #### notes:
-    * the only rule declared in this example uses a function that is called for every response.
+  > * the only rule declared in this example uses a function that is called for every response.
       * it uses the contextual variable: `response.headers`.
       * it's important to remember that some variables are only available in certain contexts.<br>
         for example, `response.headers` wouldn't make any sense in the context of processing an (outbound) HTTP request..<br>
