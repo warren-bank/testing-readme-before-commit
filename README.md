@@ -248,9 +248,9 @@
 
     * Path to Rules File
 
-      > default: ''
-
       >  <sub>refer to the following __Comments / Implementation Notes__ for advanced usage</sub>
+
+      > default: ''
 
     * Watch Interval (ms, 0 to disable)
 
@@ -270,9 +270,9 @@
 
     * Path to Rules File
 
-      > default: ''
-
       >  <sub>refer to the following __Comments / Implementation Notes__ for advanced usage</sub>
+
+      > default: ''
 
     * Watch Interval (ms, 0 to disable)
 
