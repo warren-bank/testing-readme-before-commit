@@ -205,8 +205,7 @@
       * finishes by setting rules that apply global exceptions
 
 2.
-
->   ```javascript
+  > ```javascript
 [
     {
         "url" : /^.*$/,
@@ -224,9 +223,9 @@
         }
     }
 ]
-    ```
+```
 
-> #### notes:
+  > #### notes:
     * the only rule declared in this example uses a function that is called for every response.
       * it uses the contextual variable: `response.headers`.
       * it's important to remember that some variables are only available in certain contexts.<br>
