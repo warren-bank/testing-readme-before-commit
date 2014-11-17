@@ -153,7 +153,8 @@
 ### Examples
 
 1.
-  > ```javascript
+  >
+    ```javascript
 [
     {
         "url" : /^.*$/,
@@ -189,7 +190,7 @@
         }
     }
 ]
-  ```
+    ```
 
   > #### notes:
     * this example is applicable to a response data specification,<br>
@@ -205,7 +206,8 @@
       * finishes by setting rules that apply global exceptions
 
 2.
-  > ```javascript
+  >
+    ```javascript
 [
     {
         "url" : /^.*$/,
@@ -223,7 +225,7 @@
         }
     }
 ]
-  ```
+    ```
 
   > #### notes:
     * the only rule declared in this example uses a function that is called for every response.
