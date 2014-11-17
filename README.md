@@ -155,7 +155,7 @@
 1.
 
   >
-```javascript
+    ```javascript
 [
     {
         "url" : /^.*$/,
@@ -191,7 +191,7 @@
         }
     }
 ]
-```
+    ```
 
   > #### notes:
     * this example is applicable to a response data specification,<br>
@@ -208,7 +208,8 @@
 
 2.
 
-  > ```javascript
+  >
+    ```javascript
 [
     {
         "url" : /^.*$/,
