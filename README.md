@@ -233,8 +233,8 @@
           since we couldn't possibly know the answer to a question we haven't asked yet.
         * referencing a variable that's undefined will throw an exception.
         * this exception will be caught, and nothing bad will happen..<br>
-          however, none of your rules (in that particular data set) will be applied.<br>
-          since requests and responses use separate data sets, an error in one won't effect the other.
+          however, none of your rules (in that particular data set) will be applied.
+        * since requests and responses use separate data sets, an error in one won't effect the other.
 
 ### User Preferences
 
