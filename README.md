@@ -144,9 +144,9 @@
     * [__true__]: do not process any additional rules
 * while each request/response is processed by its corresponding rules data set,<br>
   when a `url` pattern match occurs for a rule,<br>
-  when either the `headers` or `stop` attribute of the matching rule object is declared as a javascript function,<br>
-  contextual variables will be constructed and made availabe to the function that will convey information about the particular request/response being processed.<br>
-  the function is expected to return the proper data type; otherwise, its output will be ignored.
+  when either the `headers` or `stop` attribute of the matching rule object is declared as a javascript function:
+  * contextual variables will be constructed and made availabe to the function that will convey information about the particular request/response being processed.
+  * the function is expected to return the proper data type; otherwise, its output will be ignored.
 * while rules are being processed, an internal list of updates is being created and incrementally updated.
 * when the processing of rules is complete, this internal list of updates are applied to the request/response.
 
