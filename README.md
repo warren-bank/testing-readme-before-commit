@@ -209,7 +209,7 @@
 2. sample rules data set:
 
   >
-    ```javascript
+  > ```javascript
 [
     {
         "url" : /^.*$/,
