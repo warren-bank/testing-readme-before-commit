@@ -60,13 +60,13 @@
     * request.headers.unmodified = {}<br>
       hash of all HTTP headers in original/unmodified request
     * request.headers.updated = {}<br>
-      hash of all HTTP headers that the rules array data set (for requests) has incrementally modified at the current point of rules processing.<br>
-      this hash is empty before any rules are processed.<br>
-      as rules are processed in sequential order, any rule that matches the requested URL may specify updated HTTP headers which will be applied to this hash object.<br>
-      when rule processing is completed, the final state of this hash will be applied to the HTTP request.
-      * a `string` value will set/update the HTTP header corresponding to its hash key.
-      * a `boolean` __false__ value will be ignored
-      * a __null__ value will remove the HTTP header corresponding to its hash key (if originally present).
+      hash of all HTTP headers that the rules array data set (for requests) has incrementally modified at the current point of rules processing.
+      * this hash is empty before any rules are processed.
+      * as rules are processed in sequential order, any rule that matches the requested URL may specify updated HTTP headers which will be applied to this hash object.
+      * when rule processing is completed, the final state of this hash will be applied to the HTTP request.
+        * a `string` value will set/update the HTTP header corresponding to its hash key.
+        * a `boolean` __false__ value will be ignored
+        * a __null__ value will remove the HTTP header corresponding to its hash key (if originally present).
 
   * _request only_
 
