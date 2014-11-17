@@ -153,8 +153,8 @@
 ### Examples
 
 1.
-  >
-    ```javascript
+
+  > ```javascript
 [
     {
         "url" : /^.*$/,
@@ -206,8 +206,8 @@
       * finishes by setting rules that apply global exceptions
 
 2.
-  >
-    ```javascript
+
+  > ```javascript
 [
     {
         "url" : /^.*$/,
