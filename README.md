@@ -153,7 +153,6 @@
 ### Examples
 
 1. sample rules data set:
-
   >
     ```javascript
 [
@@ -207,9 +206,8 @@
       * finishes by setting rules that apply global exceptions
 
 2. sample rules data set:
-
   >
-  > ```javascript
+    ```javascript
 [
     {
         "url" : /^.*$/,
