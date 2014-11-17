@@ -199,7 +199,7 @@
       * it uses shorthand when the pattern doesn't contain forward slash `/` characters, which would otherwise need to be escaped.
       * however, using the `RegExp` constructor means that the pattern needs to be passed as a string;
         and this would require that backslashes `\` be escaped.
-      * so, do whatever you find is best for you.. just make sure that your code produces a valid javascript RegExp object after evaluation.
+      * so, do whatever you find is best for you.. just make sure that your code produces a valid javascript `RegExp` object after evaluation.
   > * usage pattern:
       * begins by setting rules that apply global defaults
       * then adds rules that apply special-case exceptions
@@ -228,13 +228,13 @@
   > #### notes:
   > * the only rule declared in this example uses a function that is called for every response.
       * it uses the contextual variable: `response.headers`.
-      * it's important to remember that some variables are only available in certain contexts.<br>
-        for example, `response.headers` wouldn't make any sense in the context of processing an (outbound) HTTP request..<br>
-        since we couldn't possibly know the answer to a question we haven't asked yet.<br>
-        referencing a variable that's undefined will throw an exception.<br>
-        this exception will be caught, and nothing bad will happen..<br>
-        however, none of your rules (in that particular data set) will be applied.<br>
-        since requests and responses use separate data sets, an error in one won't effect the other.
+      * it's important to remember that some variables are only available in certain contexts.
+        * for example, `response.headers` wouldn't make any sense in the context of processing an (outbound) HTTP request..
+        * since we couldn't possibly know the answer to a question we haven't asked yet.
+        * referencing a variable that's undefined will throw an exception.
+        * this exception will be caught, and nothing bad will happen..<br>
+          however, none of your rules (in that particular data set) will be applied.<br>
+          since requests and responses use separate data sets, an error in one won't effect the other.
 
 ### User Preferences
 
