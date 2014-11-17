@@ -154,7 +154,7 @@
 
 > 1.
 
->   ```javascript
+    ```javascript
 [
     {
         "url" : /^.*$/,
