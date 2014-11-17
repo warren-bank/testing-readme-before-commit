@@ -1,276 +1,337 @@
-# JSON-DataView
-Firefox add-on that displays JSON data in a collapsible tree structure with syntax highlights.
+## [moz-rewrite](https://github.com/warren-bank/moz-rewrite)
 
-## Screenshot
+"moz-rewrite" is a Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily modifying HTTP headers in either direction
 
-![JSONP response in Google data feed](https://raw.githubusercontent.com/warren-bank/moz-json-data-view/screenshots/01.png)
+### Summary
 
-## Summary
+* Swiss Army knife for anyone interested in writing rules to intercept and conditionally modify HTTP traffic
+* a distinct set of rules are written for each:
+  * (outbound) requests
+  * (inbound) responses
+* rules can:
+  * add/edit/remove HTTP headers
+  * cancel the request
+  * redirect the request
 
-  * [jsonTreeViewer](https://github.com/summerstyle/jsonTreeViewer) served as a solid starting point for creating a DOM structure from JSON data
+### Features
 
-      > nicely coded
+* regex patterns are used to match rules against the requested URL
+* rules are applied incrementally, until either:
+  * all rules have been processed
+  * a rule is marked as being final
+* rules are declared within a well-defined data structure.<br>
+  this data isn't JSON; it is evaluated as javascript.<br>
+  as such, the following are allowed:
+  * comments
+  * regex patterns (shorthand syntax `//` or `new RegExp`)
+  * functions
+  * "immediately-invoked function expressions" (aka: "self-executing anonymous functions")
+* where a function is present, it will be called each time the rule is evaluated.<br>
+  rules are evaluated for every request and/or response.<br>
+  when functions are called, there will be contextual variables as well as helper functions in scope.<br>
+  the contextual variables will allow the function to return a value that is dependent upon the state of the request/response.<br>
+  the helper functions provide a library for tasks that are commonly used to generate HTTP header values.
+* where an "immediately-invoked function expression" is present, the javascript will only be evaluated once.<br>
+  this occurs when the rules are read from an external file and evaluated into a javascript array of rule objects.<br>
+  when this evaluation occurs, there is no contextual request or response.. so there are no contextual variables in scope.<br>
+  however, the same helper functions that are always available to functions (that are defined within the rules data set) will also be available at the time that the rules data set is initialized/evaluated.
 
-  * [highlight.js](https://github.com/isagalaev/highlight.js) is used to provide syntax highlighting to the DOM structure
+### Contextual Variables (in scope when functions are called)
 
-  * [js-beautify](https://github.com/beautify-web/js-beautify) is used to add whitespace for readability when syntax highlighting is turned off
+  * _both requests and responses_
+    * request.original_uri = {}<br>
+      keys:
+      * `href`: [string] full URI
+      * `protocol`: [string] examples: [`http:`,`https:`,`file:`]
+      * `username`: [string]
+      * `password`: [string]
+      * `host`: [string]
+      * `port`: [string]
+      * `path`: [string]
+      * `query`: [string]
+      * `hash`: [string]
+      * `file_ext`: [string]
+    * request.uri = {}<br>
+      <sub>same keys as: `request.original_uri`</sub>
+    * request.referrer = {}<br>
+      <sub>same keys as: `request.original_uri`</sub>
+    * request.method [string]
+    * request.headers = {}
+    * request.headers.unmodified = {}<br>
+      hash of all HTTP headers in original/unmodified request
+    * request.headers.updated = {}<br>
+      hash of all HTTP headers that the rules array data set (for requests) has incrementally modified at the current point of rules processing.<br>
+      this hash is empty before any rules are processed.<br>
+      as rules are processed in sequential order, any rule that matches the requested URL may specify updated HTTP headers which will be applied to this hash object.<br>
+      when rule processing is completed, the final state of this hash will be applied to the HTTP request.
+      * a `string` value will set/update the HTTP header corresponding to its hash key.
+      * a `boolean` __false__ value will be ignored
+      * a __null__ value will remove the HTTP header corresponding to its hash key (if originally present).
 
-## Detection methodology
+  * _request only_
 
-  * This add-on will modify the display of all server responses (or local files) that satisfy all of the following criteria:
-    * none of the following short-circuit conditions are true:
-      * the location protocol is 'view-source:'
-      * the location hash contains: `No-JSON-DataView`
+  * _response only_
+    * response.headers = {}
+    * response.headers.unmodified = {}<br>
+      hash of all HTTP headers in original/unmodified response
+    * response.headers.updated = {}<br>
+      hash of all HTTP headers that the rules array data set (for responses) has incrementally modified at the current point of rules processing.<br>
+      <sub>see additional notes under: `request.headers.updated`</sub>
+    * response.status_code [integer]
+    * response.charset [string]
+    * response.content_length [integer]
+    * response.content_type [string]
 
-        > notes:
-        > * not case sensitive
-        > * can be combined with other hash tokens by using one of the separators: `/,`
+### Helper Functions (in scope when functions are called)
 
-    * either:
-      * the HTTP header 'content-type' is one of:
-        * 'application/json'
-        * 'text/json'
-        * 'text/x-json'
-      * or both must be true:
-        * the HTTP header 'content-type' is one of:
-          * 'application/javascript'
-          * 'application/x-javascript'
-          * 'text/javascript'
-          * 'text/plain'
-        * and one of the following additional conditions are met:
-          * the location pathname ends with '.json'
-          * the location querystring contains 'callback=',
-            and the response is structured as a JSONP callback function
-          * the location hash contains: `JSON-DataView`
+  * _always available_
+    * atob(string_base64_encoded)<br>
+      decodes a string of data which has been encoded using base-64 encoding.
+    * base64_decode(string_base64_encoded)<br>
+      alias for: _atob_
+    * btoa(string_value)<br>
+      creates a base-64 encoded ASCII string from a "string" of binary data.
+    * base64_encode(string_value)<br>
+      alias for: _btoa_
+    * md2(string_value)<br>
+      returns the result of hashing the input string using the `md2` crypto hash function
+    * md5(string_value)<br>
+      returns the result of hashing the input string using the `md5` crypto hash function
+    * sha1(string_value)<br>
+      returns the result of hashing the input string using the `sha1` crypto hash function
+    * sha256(string_value)<br>
+      returns the result of hashing the input string using the `sha256` crypto hash function
+    * sha384(string_value)<br>
+      returns the result of hashing the input string using the `sha384` crypto hash function
+    * sha512(string_value)<br>
+      returns the result of hashing the input string using the `sha512` crypto hash function
 
-## Comments
+  * _request only_
+    * redirectTo(string_URI)
+    * cancel()
 
-  * It's become pretty standard practice for jsonp responses to contain javascript comments.
-    The comments serve as a form of protection against an Adobe Flash Player exploit that uses jsonp to bypass the same-origin security policy. This [attack](https://github.com/mikispag/rosettaflash) is known as [Rosetta Flash](http://miki.it/blog/2014/7/8/abusing-jsonp-with-rosetta-flash/).
+  * _response only_
 
-  * When processing the response to determine whether it contains a valid jsonp callback function,
-    the following javascript statements will be ignored:
-    * leading and trailing comments (in both `//` and `/* */` formats)
-    * leading validation of the callback function, using any of the patterns:
-      * `cb && cb(json)`
-      * `typeof cb === 'function' && cb(json)`
+### Data Structure
 
-    After the format of the response is validated, the parameter string is extracted from the callback function and treated as a string of JSON data.
+* the same data structure (schema) applies to both requests and responses
+* request and response data are defined separately
+* the data structure is an array of objects, where each object represents a rule.
+* each rule can have the following attributes:
+  * `url` (required, `RegExp`)
+  * `headers` (required, `object` or `function`):
+    * key = name of HTTP header
+    * value = determines what action to take
+      * [`string`]:<br>
+        new value of HTTP header
+      * [`boolean`, value === __false__]:<br>
+        ignore all previous rules for this HTTP header,<br>
+        and leave the original value unmodified
+      * [`object`, value === __null__]:<br>
+        remove HTTP header from request/response
+  * `stop` (optional, `boolean` or `function`):<br>
+    when:
+    * the `url` pattern of this rule matches the requested URL, _and_
+    * processing of this rule is complete
 
-  *	In the detection methodology, the inspection of the location hash for special `control tokens`
-    provides a user the added ability to explicitly override the normal detection logic.
+    then:
+    * [__false__, default]: process next rule (in array)
+    * [__true__]: do not process any additional rules
+* while each request/response is processed by its corresponding rules data set,<br>
+  when a `url` pattern match occurs for a rule,<br>
+  when either the `headers` or `stop` attribute of the matching rule object is declared as a javascript function,<br>
+  contextual variables will be constructed and made availabe to the function that will convey information about the particular request/response being processed.<br>
+  the function is expected to return the proper data type; otherwise, its output will be ignored.
+* while rules are being processed, an internal list of updates is being created and incrementally updated.
+* when the processing of rules is complete, this internal list of updates are applied to the request/response.
 
-    This can be useful in a number of different circumstances. For instance:
-      * A web server response is known to contain JSON data;
-        however, the 'content-type' headers are too generic to pass normal detection.
-        This would normally be the result of a misconfigured web server,
-        or poorly written backend script.
+### Examples
 
-        > the solution would be to manually append the `control token` that explicitly signals
-          to the add-on that it should take action: `#JSON-DataView`
+> 1.
 
-      * Another scenario (that I [recently ran into](https://github.com/warren-bank/moz-harviewer)) is when two different add-ons
-        are both triggered to take action on the same page.
+>   ```javascript
+[
+    {
+        "url" : /^.*$/,
+        "headers" : {
+            "Content-Security-Policy" : "default-src * 'self' data: mediastream:;frame-ancestors *",
+            "X-Content-Security-Policy" : null,
+            "X-Frame-Options" : null
+        }
+    },
+    {
+        "url" : new RegExp('^(file://|https?://localhost/).*$', 'i'),
+        "headers" : {
+            "Access-Control-Allow-Origin" : "*",
+            "Access-Control-Allow-Methods" : "GET,POST"
+        },
+        "stop": true
+    },
+    {
+        "url" : new RegExp('^https?://api\\.github\\.com/.*$', 'i'),
+        "headers" : {
+            "Content-Security-Policy" : null
+        },
+        "stop": true
+    },
+    {
+        "url" : new RegExp('^https://.*(bank|billpay|checking).*$', 'i'),
+        "headers" : {
+            "Content-Security-Policy" : false,
+            "X-Content-Security-Policy" : false,
+            "X-Frame-Options" : false,
+            "Access-Control-Allow-Origin" : false,
+            "Access-Control-Allow-Methods" : false
+        }
+    }
+]
+    ```
 
-        JSON is a very general-purpose way to structure/serialize/transmit data.
+> #### notes:
+    * this example is applicable to a response data specification,<br>
+      only because these particular HTTP headers are meaningful to the client (ie: browser) rather than the server.
+    * the syntax used to declare the regex patterns is inconsistent.<br>
+      it uses shorthand when the pattern doesn't contain `/` characters, which would otherwise need to be escaped.<br>
+      however, using the `RegExp` constructor means that the pattern needs to be passed as a string;<br>
+      and this would require that backslashes `\` be escaped.<br>
+      so, do whatever you find is best for you.. just make sure that your code produces a valid javascript RegExp object after evaluation.
+    * usage pattern:
+      * begins by setting rules that apply global defaults
+      * then adds rules that apply special-case exceptions
+      * finishes by setting rules that apply global exceptions
 
-        There are many `domain specific` data formats that are defined by a JSON schema.
-        One such example is the [HTTP Archive format](http://www.softwareishard.com/blog/har-12-spec/).
+> 2.
 
-        If there's an add-on that specifically targets one such format,
-        then whether or not there is the potential for conflict between the two add-ons
-        running at the same time depends on the particular data format.
-        * If it has been assigned its own 'content-type' (and if servers tend to use it),
-          then there won't be any conflict.
-        * However, if this data format is sent with a generic JSON-ish 'content-type',
-          then both add-ons will most likely be trying to detect the same conditions.
+>   ```javascript
+[
+    {
+        "url" : /^.*$/,
+        "headers" : function(){
+            var $headers = {};
 
-        This is where having the option to manually add `control tokens` is a very good thing.
+            if (response.headers.unmodified['content-type'] !== 'text/html'){
+                $headers = {
+                    "Content-Security-Policy" : null,
+                    "X-Content-Security-Policy" : null
+                };
+            }
 
-        Concrete example:
-        * both add-ons are installed:
-          * [JSON-DataView](https://github.com/warren-bank/moz-json-data-view)
-          * [HTTP Archive Viewer](https://github.com/warren-bank/moz-harviewer)
-        * a HAR file is requested from a server
-        * the 'content-type' of the response is: `application/json`
-        * to view the HAR data in a rich visualization tool
-          (with charts and graphs, etc) using the `HTTP Archive Viewer` add-on,
-          the following `control tokens` could be used:
-            * http://httparchive.webpagetest.org/export.php?test=140801_0_8JH&run=1&cached=0&pretty=1#HTTP-Archive-Viewer/No-JSON-DataView
-        * conversely, to take a deep dive into the raw data using the `JSON-DataView` add-on,
-          the following `control tokens` could be used:
-            * http://httparchive.webpagetest.org/export.php?test=140801_0_8JH&run=1&cached=0&pretty=1#No-HTTP-Archive-Viewer/JSON-DataView
-        * note that:
-            * order of the `control tokens` doesn't matter
-            * they are both case insensitive
+            return $headers;
+        }
+    }
+]
+    ```
 
-              > the pretty capitalization is just for the README
+> #### notes:
+    * the only rule declared in this example uses a function that is called for every response.
+      * it uses the contextual variable: `response.headers`.
+      * it's important to remember that some variables are only available in certain contexts.<br>
+        for example, `response.headers` wouldn't make any sense in the context of processing an (outbound) HTTP request..<br>
+        since we couldn't possibly know the answer to a question we haven't asked yet.<br>
+        referencing a variable that's undefined will throw an exception.<br>
+        this exception will be caught, and nothing bad will happen..<br>
+        however, none of your rules (in that particular data set) will be applied.<br>
+        since requests and responses use separate data sets, an error in one won't effect the other.
 
-## User Preferences:
+### User Preferences
 
-  * syntax highlighting:
+  * HTTP Requests (outbound):
     * on/off toggle
 
-      on: Builds an HTML DOM structure that supports presenting the data within a collapsible tree.<br>
-      off: Filters the JSON data through `js-beautify`, and outputs into a `<pre>` DOM element.
+      on: intercept HTTP Requests and apply the rules data set to it
 
       > default: on
 
-    * expand all nodes
+    * Path to Rules File
 
-      initialize all collapsible tree nodes to an expanded state (during page load)?
-
-      > default: false
-
-    * choice of color scheme
-
-      options consist of those provided by [highlight.js](https://github.com/isagalaev/highlight.js/tree/master/src/styles)
-
-      > default: 'solarized_dark'
-
-  * css customizations:
-    * font-family
-
-      the (internal) stylesheet assigns a default value.<br>
-      this preference is optional;<br>
-      if assigned a value, it will override the stylesheet.
+      <sub>refer to the following __Comments / Implementation Notes__ for advanced usage</sub>
 
       > default: ''
 
-    * font-size
+    * Watch Interval (ms, 0 to disable)
 
-      units: px
+      useful while writing/testing new rules,<br>
+      this feature will watch the rules file for changes,<br>
+      and reload its rules as needed.
 
-      > default: 13
+      > default: 0 (off)
 
-    * line-height
+  * HTTP Responses (inbound):
+    * on/off toggle
 
-      units: em
+      on: intercept HTTP Responses and apply the rules data set to it
 
-      > default: 2
+      > default: on
 
-    * padding around the `<body>`
+    * Path to Rules File
 
-      units: em
+      <sub>refer to the following __Comments / Implementation Notes__ for advanced usage</sub>
 
-      > default: 1
+      > default: ''
 
-    * width of indentation for expanded children
+    * Watch Interval (ms, 0 to disable)
 
-      units: em
+      useful while writing/testing new rules,<br>
+      this feature will watch the rules file for changes,<br>
+      and reload its rules as needed.
 
-      > default: 1
+      > default: 0 (off)
 
-      > **NOTE:**<br>
-      > 1.5em is ADDED to the value specified through this setting.<br>
-      > This is the width required to ensure the expand/collapse button can be properly displayed.
+### Comments / Implementation Notes
 
-## Examples
-
-  > URLs to render in-browser after the add-on has been installed, which illustrate its functionality
-
-  * http://graph.facebook.com/coca-cola?callback=hello_world
-
-    > * Facebook's graph API
-
-    > * JSONP request/response
-
-    > * 'content-type' of response === 'application/json'
-
-      >> _note: this should be 'application/javascript' or 'text/javascript'_
-
-    > * format of response content:
-
-    >   ```javascript
-/**/ hello_world({});
-        ```
-
-  * http://www.google.com/calendar/feeds/developer-calendar@google.com/public/full?alt=json&callback=hello_world
-
-    >  * Google's calendar of developer events
-
-    >  * JSONP request/response
-
-    > * 'content-type' of response === 'text/javascript'
-
-    > * format of response content:
-
-    >   ```javascript
-// API callback
-hello_world({});
-        ```
-
-  * http://feeds.delicious.com/v2/json/popular?callback=hello_world
-
-    > * delicious.com data feed; top 10 most popular.. somethings
-
-    > * JSONP request/response
-
-    > * 'content-type' of response === 'text/javascript'
-
-    > * format of response content:
-
-    >   ```javascript
-hello_world([])
-        ```
-
-  * https://api.twitter.com/1.1/statuses/user_timeline.json
-
-    > * response contains JSON data
-
-    > * 'content-type' of response === 'application/json'
-
-  * http://gdata.youtube.com/feeds/api/standardfeeds/most_popular?alt=json&v=2
-
-    > * response contains JSON data
-
-    > * 'content-type' of response === 'application/json'
-
-  * http://headers.jsontest.com/?mime=1
-
-    > * response contains JSON data
-
-    > * 'content-type' of response === 'application/json'
-
-  * http://headers.jsontest.com/?mime=2
-
-    > * 'content-type' of response === 'application/javascript'
-
-    > * __IS NOT__ acted upon
-        * the criteria for the detection methodology are not met
-        * any of the following methods could be used to satisfy these criteria:
-          * wrap the response in a JSONP callback <sub>(requires cooperation server-side)</sub>:<br>
-                http://headers.jsontest.com/?mime=2&callback=hello_world
-          * add a `control token` to the hash:<br>
-                http://headers.jsontest.com/?mime=2#JSON-DataView
-
-  * http://headers.jsontest.com/?mime=3
-
-    > * 'content-type' of response === 'text/javascript'
-
-    > * __IS NOT__ acted upon
-        * same work-around methods could be used (as in the earlier example)
-
-  * http://headers.jsontest.com/?mime=4
-
-    > * 'content-type' of response === 'text/html'
-
-    > * __IS NOT__ acted upon
-        * Anecdotally, it appears that this 'content-type' is a special case.
-        * Under normal circumstances, an add-on is required to register itself to "convert streams" from the incoming 'content-type' values upon which it wishes to act. These "streams" are then (conditionally) "converted" into a 'text/html' request.
-        * It's unclear to me whether the internal logic used by the plugin architecture is that add-ons are invoked only on 'text/html' streams; and that this "stream conversion" API is a methodology by which to allow other streams to enter the workflow.
-        * All that I can say for certain is that the detection methodology doesn't specifically register this add-on to listen for 'text/html' streams, and yet it is invoked during their page-load processing.
-        * This being the case, one of the two aforementioned work-around methods would work:
-          * the presence of a `control token` [in the hash](http://headers.jsontest.com/?mime=4#JSON-DataView) will be seen and obeyed
-          * otherwise, the 'content-type' will fail to match a valid value and the add-on will short-circuit (exit immediately) before the querystring would normally be inspected for [a jsonp signature](http://headers.jsontest.com/?mime=4&callback=hello_world)
-
-  * http://headers.jsontest.com/?mime=5
-
-    > * 'content-type' of response === 'text/plain'
-
-    > * __IS NOT__ acted upon
-        * same work-around methods could be used (as in the earlier example)
+  * data sets are stored in external files.<br>
+    this allows them to be maintained using any text editor.
+  * the addon asks to know the file path to each data set.<br>
+    one for requests, one for responses.
+  * there are two ways to specify a file path:
+    * browse for file, which stores an absolute path
+    * manually enter the path, which is parsed in such a way that portable/relative paths are supported.<br>
+      when this path begins with one of the following special tokens,<br>
+      the token will be replaced with the corresponding directory path.
+      The absolute path of these "special directories" may change from FF shutdown to startup,<br>
+      but the relative path will remain valid,<br>
+      and the updated (absolute) file path will be determined.<br>
+      These "special tokens/directories" include:
+      * `{ProfD}`: profile directory
+      * `{CurProcD}`: current working directory (usually the application's installation directory)
+      * `{ProfDefNoLoc}`: %installation%/defaults/profile
+      * `{PrfDef}`: %installation%/defaults/pref
+      * `{Desk}`: user's desktop directory
+      * `{Home}`: user's home directory
+      * `{DfltDwnld}`: default Downloads directory
+      * `{TmpD}`: operating system's temporary files directory
+      Sample interpolation values:
+      * Windows, PortableApps:
+        * `{ProfD}`: `C:\PortableApps\Firefox\Data\profile`
+        * `{CurProcD}`: `C:\PortableApps\Firefox\App\firefox\browser`
+        * `{ProfDefNoLoc}`: `C:\PortableApps\Firefox\App\firefox\browser\defaults\profile`<br>
+          <sub>_(note: directory does not exist)_</sub>
+        * `{PrfDef}`: `C:\PortableApps\Firefox\App\firefox\defaults\pref`
+        * `{Desk}`: `REG QUERY "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v Desktop`
+        * `{Home}`: `%USERPROFILE%`
+        * `{DfltDwnld}`: `%USERPROFILE%\Downloads`
+        * `{TmpD}`: `%TEMP%`
+      So.. if portability is a concern, then the following file paths should work nicely:<br>
+        * `{ProfD}/moz-rewrite/requests.js`
+        * `{ProfD}/moz-rewrite/responses.js`
+  * the addon will (optionally) watch these files for updates.
+  * when a file path is changed (in addon preferences),<br>
+    or a watched file path has been updated (identified by its _last modification date_):
+    * the file contents are read into a string
+    * the string is evaluated as javascript
+    * the return value is validated for having the proper schema
+    * the rules array is stored (in memory)
+  * when a request/response observer is notified:
+    * the corresponding rules array is processed, sequentially until complete
+    * the list of updates are applied to the request/response
+  * the heavy lifting is converting the javascript entered by the user in the rules files into (in-memory) data objects.<br>
+    this occurs infrequently, only as-needed.<br>
+    the size of the (in-memory) data objects will be very small.<br>
+    the performance cost of calling functions within these data objects is trivial.
+    this cost is farther reduced by using a strategy that counts the number of functions within the rules array data set during its validation.<br>
+    if there are no functions, then there's no need to create the variables that would normally be available (in scope) to functions;<br>
+    when it's appropriate to do so, eliminating this step makes the performance cost (of processing the corresponding rules array data set) nearly free.
 
 ## License
-  > [GPLv3](http://www.gnu.org/licenses/gpl-3.0.txt)
+  > [GPLv2](http://www.gnu.org/licenses/gpl-2.0.txt)
   > Copyright (c) 2014, Warren Bank
