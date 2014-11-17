@@ -213,14 +213,12 @@
         "url" : /^.*$/,
         "headers" : function(){
             var $headers = {};
-
             if (response.headers.unmodified['content-type'] !== 'text/html'){
                 $headers = {
                     "Content-Security-Policy" : null,
                     "X-Content-Security-Policy" : null
                 };
             }
-
             return $headers;
         }
     }
