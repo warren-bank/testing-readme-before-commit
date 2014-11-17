@@ -189,7 +189,7 @@
         }
     }
 ]
-    ```
+```
 
   > #### notes:
     * this example is applicable to a response data specification,<br>
