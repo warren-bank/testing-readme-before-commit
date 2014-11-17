@@ -230,7 +230,7 @@
       * it uses the contextual variable: `response.headers`.
       * it's important to remember that some variables are only available in certain contexts.
         * for example, `response.headers` wouldn't make any sense in the context of processing an (outbound) HTTP request..
-        * since we couldn't possibly know the answer to a question we haven't asked yet.
+          since we couldn't possibly know the answer to a question we haven't asked yet.
         * referencing a variable that's undefined will throw an exception.
         * this exception will be caught, and nothing bad will happen..<br>
           however, none of your rules (in that particular data set) will be applied.<br>
