@@ -296,8 +296,8 @@
       * these "special tokens/directories" include:
         * `{ProfD}`: <br>profile directory
         * `{CurProcD}`: <br>current working directory (usually the application's installation directory)
-        * `{ProfDefNoLoc}`: <br>`%installation%/defaults/profile`
-        * `{PrfDef}`: <br>`%installation%/defaults/pref`
+        * `{ProfDefNoLoc}`: <br>%installation%/defaults/profile
+        * `{PrfDef}`: <br>%installation%/defaults/pref
         * `{Desk}`: <br>user's desktop directory
         * `{Home}`: <br>user's home directory
         * `{DfltDwnld}`: <br>default Downloads directory
