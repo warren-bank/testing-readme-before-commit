@@ -152,7 +152,7 @@
 
 ### Examples
 
-1. sample rules data set:
+1. sample _response_ rules data set:
   >
     ```javascript
 [
@@ -205,7 +205,7 @@
       * then adds rules that apply special-case exceptions
       * finishes by setting rules that apply global exceptions
 
-2. sample rules data set:
+2. sample _response_ rules data set:
   >
     ```javascript
 [
