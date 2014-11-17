@@ -254,9 +254,8 @@
 
     * Watch Interval (ms, 0 to disable)
 
-      useful while writing/testing new rules,<br>
-      this feature will watch the rules file for changes,<br>
-      and reload its rules as needed.
+      useful while writing/testing new rules.<br>
+      this feature will watch the rules file for changes, and reload its contents as needed.
 
       > default: 0 (off)
 
@@ -276,9 +275,8 @@
 
     * Watch Interval (ms, 0 to disable)
 
-      useful while writing/testing new rules,<br>
-      this feature will watch the rules file for changes,<br>
-      and reload its rules as needed.
+      useful while writing/testing new rules.<br>
+      this feature will watch the rules file for changes, and reload its contents as needed.
 
       > default: 0 (off)
 
