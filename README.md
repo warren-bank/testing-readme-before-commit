@@ -189,7 +189,7 @@
         }
     }
 ]
-```
+  ```
 
   > #### notes:
     * this example is applicable to a response data specification,<br>
@@ -223,7 +223,7 @@
         }
     }
 ]
-```
+  ```
 
   > #### notes:
     * the only rule declared in this example uses a function that is called for every response.
