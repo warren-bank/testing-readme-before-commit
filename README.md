@@ -196,12 +196,12 @@
   > #### notes:
   > * this example is applicable to a response data specification,<br>
       only because these particular HTTP headers are meaningful to the client (ie: browser) rather than the server.
-    * the syntax used to declare the regex patterns is inconsistent.<br>
+  > * the syntax used to declare the regex patterns is inconsistent.<br>
       it uses shorthand when the pattern doesn't contain `/` characters, which would otherwise need to be escaped.<br>
       however, using the `RegExp` constructor means that the pattern needs to be passed as a string;<br>
       and this would require that backslashes `\` be escaped.<br>
       so, do whatever you find is best for you.. just make sure that your code produces a valid javascript RegExp object after evaluation.
-    * usage pattern:
+  > * usage pattern:
       * begins by setting rules that apply global defaults
       * then adds rules that apply special-case exceptions
       * finishes by setting rules that apply global exceptions
