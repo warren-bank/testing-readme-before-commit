@@ -248,7 +248,7 @@
 
     * Path to Rules File
 
-      >  <sub>refer to the following __Comments / Implementation Notes__ for advanced usage</sub>
+      >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
 
       > default: ''
 
@@ -270,7 +270,7 @@
 
     * Path to Rules File
 
-      >  <sub>refer to the following __Comments / Implementation Notes__ for advanced usage</sub>
+      >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
 
       > default: ''
 
