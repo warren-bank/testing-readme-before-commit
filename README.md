@@ -52,9 +52,9 @@
       * `hash`: [string]
       * `file_ext`: [string]
     * request.uri = {}<br>
-      <sub>same keys as: `request.original_uri`</sub>
+      > <sub>same keys as: `request.original_uri`</sub>
     * request.referrer = {}<br>
-      <sub>same keys as: `request.original_uri`</sub>
+      > <sub>same keys as: `request.original_uri`</sub>
     * request.method [string]
     * request.headers = {}
     * request.headers.unmodified = {}<br>
@@ -65,7 +65,7 @@
       * as rules are processed in sequential order, any rule that matches the requested URL may specify updated HTTP headers which will be applied to this hash object.
       * when rule processing is completed, the final state of this hash will be applied to the HTTP request.
         * a `string` value will set/update the HTTP header corresponding to its hash key.
-        * a `boolean` __false__ value will be ignored
+        * a `boolean` __false__ value will be ignored.
         * a __null__ value will remove the HTTP header corresponding to its hash key (if originally present).
 
   * _request only_
@@ -76,7 +76,7 @@
       hash of all HTTP headers in original/unmodified response
     * response.headers.updated = {}<br>
       hash of all HTTP headers that the rules array data set (for responses) has incrementally modified at the current point of rules processing.<br>
-      <sub>see additional notes under: `request.headers.updated`</sub>
+      > <sub>see additional notes under: `request.headers.updated`</sub>
     * response.status_code [integer]
     * response.charset [string]
     * response.content_length [integer]
