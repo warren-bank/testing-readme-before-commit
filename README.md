@@ -342,7 +342,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     2. gain access to and modify some browser preferences
     3. save a (javascript) file to a known path on the file system
 
-  * If a blackhat were to accomplish these "3 steps", the following abilities would be within their power:
+  * If a blackhat were to accomplish these "3 steps", among other things&hellip; they would be capable of the following:
     * forward a message back to themself (into the cloud) that contains:
       * a record of all requested domains along with their associated cookies
       * contents of files that are accessible from the file system
