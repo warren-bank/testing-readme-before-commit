@@ -335,7 +335,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     * if there are no functions, then there's no need to create the contextual variables that would normally be available (in scope) to functions;
     * when it's appropriate to do so, eliminating this step makes the performance cost (of processing the corresponding rules array data set) extremely low.
 
-### Security and Vectors of Attack:
+### Security Considerations / Potential Vectors of Attack:
 
   * In order for a blackhat (nefarious individual) to exploit [this addon](https://github.com/warren-bank/moz-rewrite), the following would need to occur:
     1. install the addon
