@@ -372,7 +372,7 @@ This [spoon](https://github.com/warren-bank/moz-rewrite-amo) is for [AMO](https:
   * The reason behind doing so was the desire to host a version on [AMO](https://addons.mozilla.org/en-US/firefox/addon/rewrite-http-headers/).
   * The coding methodology that makes this tool so very powerful is, fundamentally, the strategic usage of the javascript `eval` statement.
   * AMO doesn't accept/host addons that include `eval` for their own reasons, which are grounded in security concerns&hellip; including those discussed above.
-  * A subset of (less technical) users would probably never make use of any advanced scripting features.<br>
+  * A subset of (less technical) users would probably never make use of any advanced scripting features.
     This group would likely prefer a version that doesn't expose them to __any__ possible security risk.
 
 ## License
