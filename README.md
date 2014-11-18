@@ -4,7 +4,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 
 ### Summary
 
-* for security reasons, AMO (__a__ddons.__m__ozilla.__o__rg) generally won't accept an addon that uses the javascript `eval` statement
+* for security reasons, AMO (**a**ddons.**m**ozilla.**o**rg) generally won't accept an addon that uses the javascript `eval` statement
 * [moz-rewrite](https://github.com/warren-bank/moz-rewrite) needs to use `eval`
   * conversion of the rules file contents into a data set
   * running functions within the data set (necessary for dynamic scoping)
