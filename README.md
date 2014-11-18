@@ -349,7 +349,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     * add/edit/delete files that are accessible from the file system
 
   * Pretty scary stuff&hellip; can this really happen?
-    * first I need to say upfront that I'm _**NO SECURITY EXPERT**_;<br>
+    * first I need to say upfront that I'm _**NO SECURITY EXPERT**_&hellip;<br>
       please take anything I say here as my own personal opinions, and nothing more.
     * I can only see two ways that these "3 steps" could all occur:
       1. evil addon:
