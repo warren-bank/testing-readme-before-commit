@@ -36,7 +36,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
   * when this evaluation occurs, there is no contextual request or response.. so there are no contextual variables in scope.
   * however, the same helper functions that are always available to functions (that are defined within the rules data set) will also be available at the time that the rules data set is initialized/evaluated.
 
-## Contextual Variables (in scope when functions are called)
+## Contextual Variables <sub>(in scope when functions are called)</sub>
 
   * _both requests and responses_
     * `request.original_uri` = {}<br>
@@ -85,7 +85,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     * `response.content_length` [integer]
     * `response.content_type` [string]
 
-## Helper Functions (in scope when functions are called)
+## Helper Functions <sub>(in scope when functions are called)</sub>
 
   * _always available_
     * `atob(string_base64_encoded)`<br>
