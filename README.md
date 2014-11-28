@@ -13,10 +13,10 @@ related reading:
 
 expected output, logged by the "Browser Console":
 
-    ```
-    moz-bugzilla-sandbox-error: starting..
-    moz-bugzilla-sandbox-error: eval result = {"object":{"a":1,"b":2,"c":3},"array":[1,2,3],"number":123,"string":"123","object_keys":["a","b","c"]}
-    ```
+```
+moz-bugzilla-sandbox-error: starting..
+moz-bugzilla-sandbox-error: eval result = {"object":{"a":1,"b":2,"c":3},"array":[1,2,3],"number":123,"string":"123","object_keys":["a","b","c"]}
+```
 
 helpful hints:
   * open the "Browser Console" via the top navmenu:<br>
