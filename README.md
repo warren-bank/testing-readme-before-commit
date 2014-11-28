@@ -13,7 +13,7 @@ related reading:
 
 expected output, logged by the "Browser Console":
 
-    ```text
+    ```
     moz-bugzilla-sandbox-error: starting..
     moz-bugzilla-sandbox-error: eval result = {"object":{"a":1,"b":2,"c":3},"array":[1,2,3],"number":123,"string":"123","object_keys":["a","b","c"]}
     ```
@@ -29,37 +29,37 @@ helpful hints:
 actual output, as logged by various versions of Firefox:
   * 10.0.2
 
-    ```text
+    ```
     moz-bugzilla-sandbox-error: starting..
     moz-bugzilla-sandbox-error: eval result = {"object":{"a":1,"b":2,"c":3},"array":{"0":1,"1":2,"2":3},"number":123,"string":"123","object_keys":["a","b","c"]}
     ```
   * 12.0
 
-    ```text
+    ```
     moz-bugzilla-sandbox-error: starting..
     moz-bugzilla-sandbox-error: eval result = {"object":{"a":1,"b":2,"c":3},"array":[1,2,3],"number":123,"string":"123","object_keys":["a","b","c"]}
     ```
   * 16.0.2
 
-    ```text
+    ```
     moz-bugzilla-sandbox-error: starting..
     moz-bugzilla-sandbox-error: eval result = {"object":{"a":1,"b":2,"c":3},"array":[1,2,3],"number":123,"string":"123","object_keys":["a","b","c"]}
     ```
   * 17.0
 
-    ```text
+    ```
     moz-bugzilla-sandbox-error: starting..
     moz-bugzilla-sandbox-error: eval result = {"object":{},"array":[1,2,3],"number":123,"string":"123","object_keys":[]}
     ```
   * 24.0
 
-    ```text
+    ```
     moz-bugzilla-sandbox-error: starting..
     moz-bugzilla-sandbox-error: eval result = {"object":{},"array":[1,2,3],"number":123,"string":"123","object_keys":[]}
     ```
   * 33.1.1
 
-    ```text
+    ```
     moz-bugzilla-sandbox-error: starting..
     moz-bugzilla-sandbox-error: eval result = {"object":{},"array":[1,2,3],"number":123,"string":"123","object_keys":[]}
     ```
