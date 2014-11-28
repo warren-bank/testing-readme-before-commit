@@ -1,91 +1,68 @@
-# [moz-rewrite-amo](https://github.com/warren-bank/moz-rewrite-amo)
+# [moz-bugzilla-sandbox-error](https://github.com/warren-bank/moz-bugzilla-sandbox-error)
 
-Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily modifying HTTP headers in either direction
+Firefox add-on that illustrates an apparent bug in the current implementation of the Mozilla sandbox:
 
-## Summary
+documentation:
+  * [API: Sandbox](https://developer.mozilla.org/en-US/docs/Components.utils.Sandbox)
+  * [API: evalInSandbox](https://developer.mozilla.org/en-US/docs/Components.utils.evalInSandbox)
 
-* for security reasons, AMO (<b>a</b>ddons.<b>m</b>ozilla.<b>o</b>rg) generally won't accept an addon that uses the javascript `eval` statement
-* [moz-rewrite](https://github.com/warren-bank/moz-rewrite) needs to use `eval`
-  * conversion of the rules file contents into a data set
-  * running functions within the data set (necessary for dynamic scoping)
-* in order for other developers to know about this addon, it really needs to be hosted on AMO
-* this project is a compromise
-  * a slimmed-down version of [moz-rewrite](https://github.com/warren-bank/moz-rewrite)
-  * most of its advanced functionality is removed
-  * there's no potential for abuse, since the data will need to be proper JSON
+related reading:
+  * [API: nsIPrincipal](https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XPCOM/Reference/Interface/nsIPrincipal)
+  * [article: "Security check basics"](https://developer.mozilla.org/en-US/docs/Security_check_basics)
+  * [article: "XPConnect wrappers"](https://developer.mozilla.org/en-US/docs/Mozilla/Tech/XPCOM/Language_bindings/XPConnect/XPConnect_wrappers)
 
-## Contextual Variables
+expected output, logged by the "Browser Console":
 
-* none
+    ```text
+    moz-bugzilla-sandbox-error: starting..
+    moz-bugzilla-sandbox-error: eval result = {"object":{"a":1,"b":2,"c":3},"array":[1,2,3],"number":123,"string":"123","object_keys":["a","b","c"]}
+    ```
 
-## Helper Functions
+helpful hints:
+  * open the "Browser Console" via the top navmenu:<br>
+    `Tools -> Web Developer -> Browser Console`
+  * open the "Browser Console" via the keyboard shortcut:<br>
+    `Ctrl + Shift + J`
+  * filter the console output with:<br>
+    `moz-bugzilla-sandbox-error:`
 
-* none
+actual output, as logged by various versions of Firefox:
+  * 10.0.2
 
-## Data Structure
+    ```text
+    moz-bugzilla-sandbox-error: starting..
+    moz-bugzilla-sandbox-error: eval result = {"object":{"a":1,"b":2,"c":3},"array":{"0":1,"1":2,"2":3},"number":123,"string":"123","object_keys":["a","b","c"]}
+    ```
+  * 12.0
 
-* sample _request_ rules data set:
+    ```text
+    moz-bugzilla-sandbox-error: starting..
+    moz-bugzilla-sandbox-error: eval result = {"object":{"a":1,"b":2,"c":3},"array":[1,2,3],"number":123,"string":"123","object_keys":["a","b","c"]}
+    ```
+  * 16.0.2
 
-```javascript
-[
-{
-    "url": "^.*$",
-    "headers": {
-        "X-Demo-Header-1": "Hello moz-safe-rewrite",
-        "X-Demo-Header-2": "Goodbye moz-safe-rewrite"
-    },
-    "stop": true
-}
-]
-```
+    ```text
+    moz-bugzilla-sandbox-error: starting..
+    moz-bugzilla-sandbox-error: eval result = {"object":{"a":1,"b":2,"c":3},"array":[1,2,3],"number":123,"string":"123","object_keys":["a","b","c"]}
+    ```
+  * 17.0
 
-* sample _response_ rules data set:
+    ```text
+    moz-bugzilla-sandbox-error: starting..
+    moz-bugzilla-sandbox-error: eval result = {"object":{},"array":[1,2,3],"number":123,"string":"123","object_keys":[]}
+    ```
+  * 24.0
 
-```javascript
-[
-{
-    "url" : "^.*$",
-    "headers" : {
-        "Content-Security-Policy" : "default-src * 'self' data: mediastream:;frame-ancestors *",
-        "X-Content-Security-Policy" : null,
-        "X-Frame-Options" : null
-    }
-},
-{
-    "url" : "^(file://|https?://localhost/).*$",
-    "headers" : {
-        "Access-Control-Allow-Origin" : "*",
-        "Access-Control-Allow-Methods" : "GET,POST"
-    },
-    "stop": true
-},
-{
-    "url" : "^https?://api\\.github\\.com/.*$",
-    "headers" : {
-        "Content-Security-Policy" : null
-    },
-    "stop": true
-},
-{
-    "url" : "^https://.*(bank|billpay|checking).*$",
-    "headers" : {
-        "Content-Security-Policy" : false,
-        "X-Content-Security-Policy" : false,
-        "X-Frame-Options" : false,
-        "Access-Control-Allow-Origin" : false,
-        "Access-Control-Allow-Methods" : false
-    }
-}
-]
-```
+    ```text
+    moz-bugzilla-sandbox-error: starting..
+    moz-bugzilla-sandbox-error: eval result = {"object":{},"array":[1,2,3],"number":123,"string":"123","object_keys":[]}
+    ```
+  * 33.1.1
 
-###### differences between this data structure and the format used by [moz-rewrite](https://github.com/warren-bank/moz-rewrite#user-content-data-structure):
-  * the `url` regex pattern is stored in a string
-  * `headers` is always a hash:
+    ```text
+    moz-bugzilla-sandbox-error: starting..
+    moz-bugzilla-sandbox-error: eval result = {"object":{},"array":[1,2,3],"number":123,"string":"123","object_keys":[]}
+    ```
 
-      >  [string] header name &rArr; [string, false, null] header value
-  * `stop` (if present) must be a boolean
-
-## License
-  > [GPLv2](http://www.gnu.org/licenses/gpl-2.0.txt)
-  > Copyright (c) 2014, Warren Bank
+conclusions:
+  * the bug was introduced some time between versions: 16.0.2 and 17.0
