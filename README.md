@@ -26,14 +26,14 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
   as such:
   * all javascript data types are supported,<br>
     including those that aren't representable using JSON.<br>
-    examples:
+    for example:
     * comments
     * regex patterns
       * literal <sub>(ie: perl)</sub> notation: `//`
       * object constructor: `new RegExp('')`
     * functions
   * the declaration for the data structure can contain inline code that is interpolated once, during evaluation.<br>
-    examples:
+    for example:
     * storing the output of a helper function as (part of) a static value
     * calling an "immediately-invoked function expression" (aka: "self-executing anonymous function"), and storing its output as (part of) a static value
 * where a function is present, it will be called each time the rule is evaluated.
@@ -52,7 +52,11 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     * `request.window_location` = {}<br>
       keys:
       * `href`: [string] full URI
-      * `protocol`: [string] examples: [`http:`,`https:`,`file:`]
+      * `protocol`: [string]<br>
+        for example:
+        * `http:`
+        * `https:`
+        * `file:`
       * `username`: [string]
       * `password`: [string]
       * `host`: [string]
