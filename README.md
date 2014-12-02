@@ -8,10 +8,12 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 * a distinct set of rules are written for each:
   * (outbound) requests
   * (inbound) responses
+* all data sets use file-based persistence
 * rules can:
   * add/edit/remove HTTP headers
   * cancel the request
   * redirect the request
+  * save a record of the request
 
 ## Features
 
@@ -21,17 +23,23 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
   * a rule is marked as being final
 * rules are declared within a well-defined data structure.<br>
   this data isn't JSON; it is evaluated as javascript.<br>
-  as such, the following are allowed:
-  * comments
-  * regex patterns (shorthand syntax `//` or `new RegExp`)
-  * functions
-  * "immediately-invoked function expressions" (aka: "self-executing anonymous functions")
+  as such:
+  * all javascript data types are supported,<br>
+    including those that aren't representable using JSON.<br>
+    examples:
+    * comments
+    * regex patterns (literal [ie: perl] notation: `//`, object constructor: `new RegExp('')`)
+    * functions
+  * the declaration for the data structure can contain inline code that is interpolated once, during evaluation.<br>
+    examples:
+    * storing the output of a helper function as (part of) a static value
+    * calling an "immediately-invoked function expression" (aka: "self-executing anonymous function"), and storing its output as (part of) a static value
 * where a function is present, it will be called each time the rule is evaluated.
   * rules are evaluated for every request and/or response.
   * when functions are called, there will be contextual variables as well as helper functions in scope.
   * the contextual variables will allow the function to return a value that is dependent upon the state of the request/response.
   * the helper functions provide a library for tasks that are commonly used to generate HTTP header values.
-* where an "immediately-invoked function expression" is present, the javascript will only be evaluated once.
+* where inline javascript code is present, the javascript will only be evaluated once.
   * this occurs when the rules are read from an external file and evaluated into a javascript array of rule objects.
   * when this evaluation occurs, there is no contextual request or response.. so there are no contextual variables in scope.
   * however, the same helper functions that are always available to functions (that are defined within the rules data set) will also be available at the time that the rules data set is initialized/evaluated.
@@ -39,7 +47,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 ## Contextual Variables <sub>(in scope when functions are called)</sub>
 
   * _both requests and responses_
-    * `request.original_uri` = {}<br>
+    * `request.window_location` = {}<br>
       keys:
       * `href`: [string] full URI
       * `protocol`: [string] examples: [`http:`,`https:`,`file:`]
@@ -53,10 +61,13 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
       * `file_ext`: [string]
     * `request.uri` = {}
 
-        >  <sub>same keys as: `request.original_uri`</sub>
+        >  <sub>same keys as: `request.window_location`</sub>
+    * `request.original_uri` = {}
+
+        >  <sub>same keys as: `request.window_location`</sub>
     * `request.referrer` = {}
 
-        >  <sub>same keys as: `request.original_uri`</sub>
+        >  <sub>same keys as: `request.window_location`</sub>
     * `request.method` [string]
     * `request.headers` = {}
     * `request.headers.unmodified` = {}<br>
@@ -150,91 +161,100 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 * while rules are being processed, an internal list of updates is being created and incrementally updated.
 * when the processing of rules is complete, this internal list of updates are applied to the request/response.
 
-## Examples
+## Simple Examples
 
-1. sample _response_ rules data set:
-  >
-    ```javascript
+* sample _request_ rule(s):
+
+```javascript
 [
+    /* ****************************************************
+     * all requests: add 3 custom headers
+     * ****************************************************
+     */
     {
         "url" : /^.*$/,
         "headers" : {
-            "Content-Security-Policy" : "default-src * 'self' data: mediastream:;frame-ancestors *",
-            "X-Content-Security-Policy" : null,
-            "X-Frame-Options" : null
+            "X-Custom-Sample-Header-01" : "Foo",
+            "X-Custom-Sample-Header-02" : "Bar",
+            "X-Custom-Sample-Header-03" : "Baz"
         }
     },
+    /* ****************************************************
+     * secure requests: cancel the 3 custom headers, and stop processing rules
+     * ****************************************************
+     */
     {
-        "url" : new RegExp('^(file://|https?://localhost/).*$', 'i'),
+        "url" : /^https/i,
         "headers" : {
-            "Access-Control-Allow-Origin" : "*",
-            "Access-Control-Allow-Methods" : "GET,POST"
+            "X-Custom-Sample-Header-01" : false,
+            "X-Custom-Sample-Header-02" : false,
+            "X-Custom-Sample-Header-03" : false
         },
         "stop": true
     },
+    /* ****************************************************
+     * all requests: update 1st custom header, cancel 3rd custom header
+     * ****************************************************
+     */
     {
-        "url" : new RegExp('^https?://api\\.github\\.com/.*$', 'i'),
+        "url" : /^.*$/,
         "headers" : {
-            "Content-Security-Policy" : null
-        },
-        "stop": true
-    },
-    {
-        "url" : new RegExp('^https://.*(bank|billpay|checking).*$', 'i'),
-        "headers" : {
-            "Content-Security-Policy" : false,
-            "X-Content-Security-Policy" : false,
-            "X-Frame-Options" : false,
-            "Access-Control-Allow-Origin" : false,
-            "Access-Control-Allow-Methods" : false
+            "X-Custom-Sample-Header-01" : "Hello",
+            "X-Custom-Sample-Header-03" : false
         }
     }
+    /* ****************************************************
+     * assertion #1: non-secure URL request
+     * expected result:
+     *     X-Custom-Sample-Header-01: Hello
+     *     X-Custom-Sample-Header-02: Bar
+     * ****************************************************
+     */
 ]
-    ```
+```
 
-  > #### notes:
-  > * this example is applicable to a response data specification,<br>
-      only because these particular HTTP headers are meaningful to the client (ie: browser) rather than the server.
-  > * the syntax used to declare the regex patterns is inconsistent.
-      * it uses shorthand when the pattern doesn't contain forward slash `/` characters, which would otherwise need to be escaped.
-      * however, using the `RegExp` constructor means that the pattern needs to be passed as a string;
-        and this would require that backslashes `\` be escaped.
-      * so, do whatever you find is best for you.. just make sure that your code produces a valid javascript `RegExp` object after evaluation.
-  > * usage pattern:
-      * begins by setting rules that apply global defaults
-      * then adds rules that apply special-case exceptions
-      * finishes by setting rules that apply global exceptions
+* sample _response_ rule(s):
 
-2. sample _response_ rules data set:
-  >
-    ```javascript
+```javascript
 [
+    /* ****************************************************
+     * purpose: map an applicable 'content-type' to a finite set of resources
+     *          as identified by file extension, when loaded from local hard disk.
+     * ****************************************************
+     */
     {
-        "url" : /^.*$/,
+        "url" : new RegExp('^file://', 'i'),
         "headers" : function(){
             var $headers = {};
-            if (response.headers.unmodified['content-type'] !== 'text/html'){
-                $headers = {
-                    "Content-Security-Policy" : null,
-                    "X-Content-Security-Policy" : null
-                };
+            switch( request.window_location.file_ext.toLowerCase() ){
+                case 'txt':
+                    $headers['content-type'] = 'text/plain';
+                    break;
+                case 'css':
+                    $headers['content-type'] = 'text/css';
+                    break;
+                case 'js':
+                    $headers['content-type'] = 'application/javascript';
+                    break;
+                case 'json':
+                    $headers['content-type'] = 'application/json';
+                    break;
+            }
+            if ( $headers['content-type'] ){
+                response.content_type = $headers['content-type'];
             }
             return $headers;
-        }
+        },
+        "stop": true
     }
 ]
-    ```
+```
 
-  > #### notes:
-  > * the only rule declared in this example uses a function that is called for every response.
-      * it uses the contextual variable: `response.headers`.
-      * it's important to remember that some variables are only available in certain contexts.
-        * for example, `response.headers` wouldn't make any sense in the context of processing an (outbound) HTTP request..
-          since we couldn't possibly know the answer to a question we haven't asked yet.
-        * referencing a variable that's undefined will throw an exception.
-        * this exception will be caught, and nothing bad will happen..<br>
-          however, none of your rules (in that particular data set) will be applied.
-        * since requests and responses use separate data sets, an error in one won't effect the other.
+## More Complicated/Useful Examples
+
+* a collection of various interesting rules and useful examples has been dubbed the _recipe book_
+* it can be found in its own branch of this repo, named: [_data/recipe-book_](https://github.com/warren-bank/moz-rewrite/tree/data/recipe-book)
+* users are encouraged to contribute (via push request) additional _recipe_ examples
 
 ## User Preferences
 
@@ -335,34 +355,6 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     * if there are no functions, then there's no need to create the contextual variables that would normally be available (in scope) to functions;
     * when it's appropriate to do so, eliminating this step makes the performance cost (of processing the corresponding rules array data set) extremely low.
 
-## Security Considerations / Vectors of Attack:
-
-  * In order for a blackhat (nefarious individual) to exploit [this addon](https://github.com/warren-bank/moz-rewrite), the following would need to occur:
-    1. install the addon
-    2. gain access to and modify some browser preferences
-    3. save a (javascript) file to a known path on the file system
-
-  * If a blackhat were to accomplish these "3 steps", among other things&hellip; they would be capable of the following:
-    * forward a message back to themself (into the cloud) that contains:
-      * a record of all requested domains along with their associated cookies
-      * contents of files that are accessible from the file system
-    * add/edit/delete files that are accessible from the file system
-
-  * Pretty scary stuff&hellip; can this really happen?
-    * first I need to say upfront that I'm _**NO SECURITY EXPERT**_&hellip;<br>
-      please take anything I say here as my own personal opinions, and nothing more.
-    * I can only see two ways that these "3 steps" could all occur:
-      1. evil addon:
-         * you intentionally install this (good) addon [step 1], since this step cannot be done silently
-         * you also intentionally install a different (bad) addon, which would be able to accomplish [steps 2-3]
-      2. evil roommate:
-         * if another person were able to:
-           * log onto your computer
-           * load Firefox using your profile<br>
-            <sub>( Firefox [supports multiple user profiles](https://support.mozilla.org/en-US/kb/profile-manager-create-and-remove-firefox-profiles), but [doesn't natively support password protecting access to using them](https://support.mozilla.org/en-US/questions/807379) )</sub>
-
-           then this person would be free to configure your environment in a way that allows them to spy. (ie: all "3 steps")
-
 ## A fork that isn't a fork&hellip;
 ##### a spoon, maybe?
 
@@ -371,9 +363,10 @@ This [spoon](https://github.com/warren-bank/moz-rewrite-amo) is for [AMO](https:
   * I made a [one-off fork](https://github.com/warren-bank/moz-rewrite-amo) (from [v1.01](https://github.com/warren-bank/moz-rewrite/tree/v1.01)) that is __so__ intentionally crippled that it doesn't even belong in this repo.
   * The reason behind doing so was the desire to host a version on [AMO](https://addons.mozilla.org/en-US/firefox/addon/rewrite-http-headers/).
   * The coding methodology that makes this tool so very powerful is, fundamentally, the strategic usage of the javascript `eval` statement.
-  * AMO doesn't accept/host addons that include `eval` for their own reasons, which are grounded in security concerns&hellip; including those discussed above.
+  * AMO doesn't accept/host addons that include `eval` for security related considerations.
   * A subset of (less technical) users would probably never make use of any advanced scripting features.
     This group would likely prefer a version that doesn't expose them to __any__ possible security risk.
+  * Ultimately, I'd like to refactor the `Sandbox` classes in this project to leverage the Mozilla `Cu.Sandbox` framework. However, the [Mozilla implementation appears to have broken since Firefox 17.0](https://bugzilla.mozilla.org/show_bug.cgi?id=1106165).
 
 ## License
   > [GPLv2](http://www.gnu.org/licenses/gpl-2.0.txt)
