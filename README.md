@@ -34,7 +34,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     * functions
   * the declaration for the data structure can contain inline code,<br>
     which is interpolated only once during evaluation,<br>
-    immediately after the code is initially read from disk.<br>
+    immediately after the data file is initially read from disk.<br>
     for example:
     * storing the output of a helper function as (part of) a static value
     * calling an "immediately-invoked function expression" (aka: "self-executing anonymous function"), and storing its output as (part of) a static value
