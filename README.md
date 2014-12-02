@@ -356,8 +356,8 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 
         this feature is intended to prevent the `Output File` from growing too large.
 
-        `0`: allow the file to grow without any limitation
-        &gt; `0`: when a request record is saved to `Output File`, the data is prepended. If after this addition there are more records stored in the file (ie: `N`) than the specified number of records (ie: `X`), then only the first `X` are retained&hellip; and the trailing `N-X` are removed.
+        `0`: allow the file to grow without any limitation<br>
+        `> 0`: when a request record is saved to `Output File`, the data is prepended. If after this addition there are more records stored in the file (ie: `N`) than the specified number of records (ie: `X`), then only the first `X` are retained&hellip; and the trailing `N-X` are removed.
 
         > default: `10`
 
