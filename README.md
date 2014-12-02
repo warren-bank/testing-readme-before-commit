@@ -250,7 +250,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 ]
 ```
 
-## More Complicated/Useful Examples
+## More Complicated Examples
 
 * a collection of various interesting rules and useful examples has been dubbed the _recipe book_
 * it can be found in its own branch of this repo, named: [_data/recipe-book_](https://github.com/warren-bank/moz-rewrite/tree/data/recipe-book)
@@ -258,47 +258,167 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 
 ## User Preferences
 
-  * _HTTP Requests (outbound)_:
-    * on/off toggle
+  * __input: rules data__
+    * _HTTP Requests (outbound)_:
+      * Enabled
 
-      on: intercept _HTTP Requests_ and apply its corresponding set of rules<br>
-      off: disable this feature entirely
+        on/off toggle
 
-      > default: on
+        on: intercept _HTTP Requests_ and apply its corresponding set of rules<br>
+        off: disable this feature entirely
 
-    * Path to Rules File
+        > default: on
 
-      >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
+      * Path to Rules File
 
-      > default: ''
+        >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
 
-    * Watch Interval (ms, 0 to disable)
+        > default: ''
 
-      useful while writing/testing new rules.<br>
-      this feature will watch the rules file for changes, and reload its contents as needed.
+      * Watch Interval (ms, 0 to disable)
 
-      > default: 0 (off)
+        useful while writing/testing new rules.<br>
+        this feature will watch the rules file for changes, and reload its contents as needed.
 
-  * _HTTP Responses (inbound)_:
-    * on/off toggle
+        > default: `0` (off)
 
-      on: intercept _HTTP Responses_ and apply its corresponding set of rules<br>
-      off: disable this feature entirely
+    * _HTTP Responses (inbound)_:
+      * Enabled
 
-      > default: on
+        on/off toggle
 
-    * Path to Rules File
+        on: intercept _HTTP Responses_ and apply its corresponding set of rules<br>
+        off: disable this feature entirely
 
-      >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
+        > default: on
 
-      > default: ''
+      * Path to Rules File
 
-    * Watch Interval (ms, 0 to disable)
+        >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
 
-      useful while writing/testing new rules.<br>
-      this feature will watch the rules file for changes, and reload its contents as needed.
+        > default: ''
 
-      > default: 0 (off)
+      * Watch Interval (ms, 0 to disable)
+
+        useful while writing/testing new rules.<br>
+        this feature will watch the rules file for changes, and reload its contents as needed.
+
+        > default: `0` (off)
+
+  * __output: _save()___
+    * _HTTP Request Persistence_:
+      * Enabled
+
+        on/off toggle
+
+        on: the `save()` helper function will save a record of the request to `Output File`<br>
+        off: disable this feature entirely
+
+        > default: on
+
+      * Path to Output File
+
+        >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
+
+        > default: ''
+
+      * Maximum Number of Saved Requests
+
+        this feature is intended to prevent the `Output File` from growing too large.
+
+        `0`: allow the file to grow without any limitation
+        &gt; `0`: when a request record is saved to `Output File`, the data is prepended. If after this addition there are more records stored in the file (ie: `N`) than the specified number of records (ie: `X`), then only the first `X` are retained&hellip; and the trailing `N-X` are removed.
+
+        > default: `10`
+
+  * __tools to _replay_ saved requests__
+    * _common settings_:
+      * Path to Download Directory
+
+        >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
+
+        > default: `{DfltDwnld}`
+
+    * _wget_:
+      * Path to `wget` executable
+
+        >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
+
+        > default: `/usr/bin/wget`
+
+      * Command-Line Options for `wget` executable
+
+        > default: `-c -nd --content-disposition --no-http-keep-alive --no-check-certificate -e robots=off --progress=dot:binary`
+
+    * _curl_:
+
+      > a reference implementation that adds support for this tool exists in a separate branch: [_replay/curl_](https://github.com/warren-bank/moz-rewrite/tree/replay/curl)
+
+      > this hasn't been merged into the `master` branch due to a small incompatability, which is described pretty well across both:
+        * the [release notes for: v2.00](https://github.com/warren-bank/moz-rewrite/releases/tag/v2.00)
+        * the [commit message for: 32cb770](https://github.com/warren-bank/moz-rewrite/commit/32cb77021d295c8e037381cd6e85df52f9c0f236)
+
+## Hidden Preferences
+
+  * `extensions.Moz-Rewrite.debug`
+
+    _boolean_
+
+    `true`: enables debug log messages to be printed to the `Browser Console`
+    `false`: suppresses these log messages
+
+    > default: `false`
+
+  * `extensions.Moz-Rewrite.case_sensitive`
+
+    _boolean_
+
+    `true`: the alphabetic case of the URL and its components is preserved
+    `false`: the URL and its components are always normalized to lowercase, which allows regex patterns to be written in lowercase and omit a _case insensitive_ flag
+
+    > default: `false`
+
+## Dialog Windows
+
+  * `Tools -> moz-rewrite -> user preferences`
+
+    > * same `Options` dialog as:<br>
+        * `Tools -> Add-ons`
+          * `Extensions`
+            * `moz-rewrite -> Options`
+    > * provides a graphical interface for the user to apply changes to the values of (non-hidden) `User Preferences`
+
+  * `Tools -> moz-rewrite -> view/replay saved requests`
+
+    > * _saved HTTP Requests_:
+        * list of all saved requests<br>
+          for each, a checkbox is followed by the corresponding URL
+    > * common form field controls
+        * _replay selected requests using.._<br>
+          button that displays a list of all supported download tools<br>
+          this list currently contains:
+          * wget
+        * _interactively identify each partial/incomplete download file_<br>
+          checkbox that
+          * when:
+            * `checked`
+            * one or more _saved HTTP Requests_ are selected
+            * a download tool is actived from the list
+          * triggers:
+            * an interactive `file picker` dialog to open for each of the selected _saved HTTP Requests_, which allows the user to resume broken downloads to files having a file path that differs from what would be assumed. This assumption is based on the following factors:
+              * `Download Directory` preference
+              * the filename, as determined by the external download tool
+        * _fallback behavior when 'cancel' is chosen in interactive dialog_<br>
+          checkbox that
+          * when:
+            * _interactively identify each partial/incomplete download file_ is `checked`
+            * an interactive `file picker` dialog is closed by the user without having selected a filepath
+              * `cancel` button
+              * `close window` (ie: "X") button
+          * if `checked`:
+            * proceed with download and save to default directory
+          * if not `checked`:
+            * skip _replay_ of the specific saved request
 
 ## Comments / Implementation Notes
 
