@@ -29,7 +29,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     for example:
     * comments
     * regex patterns
-      * literal <small>(ie: perl)</small> notation: `//`
+      * literal <sub>(ie: perl)</sub> notation: `//`
       * object constructor: `new RegExp('')`
     * functions
   * the declaration for the data structure can contain inline code that is interpolated once, during evaluation.<br>
