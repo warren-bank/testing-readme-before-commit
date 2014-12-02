@@ -109,6 +109,9 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 ## Helper Functions <sub>(in scope when functions are called)</sub>
 
   * _always available_
+    * `save()`<br>
+      prepends a record of the current request to the `Output File`<br>
+      this record will be available for _replay_ via the _view/replay saved requests_ dialog window.
     * `atob(string_base64_encoded)`<br>
       decodes a string of data which has been encoded using base-64 encoding.
     * `base64_decode(string_base64_encoded)`
