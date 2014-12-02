@@ -112,16 +112,21 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     * `save()`<br>
       prepends a record of the current request to the `Output File`<br>
       this record will be available for _replay_ via the _view/replay saved requests_ dialog window.
+
     * `atob(string_base64_encoded)`<br>
       decodes a string of data which has been encoded using base-64 encoding.
+
     * `base64_decode(string_base64_encoded)`
 
         >  <sub>alias for: `atob`</sub>
+
     * `btoa(string_value)`<br>
       creates a base-64 encoded ASCII string from a "string" of binary data.
+
     * `base64_encode(string_value)`
 
         >  <sub>alias for: `btoa`</sub>
+
     * `md2(string_value)`<br>
       returns the result of hashing the input string using the `md2` crypto hash function
     * `md5(string_value)`<br>
