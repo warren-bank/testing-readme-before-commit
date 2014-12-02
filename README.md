@@ -410,17 +410,19 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
             this list currently contains:
             * wget
 
-    >   * _interactively identify each partial/incomplete download file_<br>
-          checkbox that
-          * when:
-            * `checked`
-            * one or more _saved HTTP Requests_ are selected
-            * a download tool is actived from the list
-          * triggers:
-            * an interactive `file picker` dialog to open for each of the selected _saved HTTP Requests_, which allows the user to resume broken downloads to files having a file path that differs from what would be assumed. This assumption is based on the following factors:
-              * `Download Directory` preference
-              * the filename, as determined by the external download tool
-        * _fallback behavior when 'cancel' is chosen in interactive dialog_<br>
+    >   * _interactively identify each partial/incomplete download file_
+
+    >     > checkbox that
+            * when:
+              * `checked`
+              * one or more _saved HTTP Requests_ are selected
+              * a download tool is actived from the list
+            * triggers:
+              * an interactive `file picker` dialog to open for each of the selected _saved HTTP Requests_, which allows the user to resume broken downloads to files having a file path that differs from what would be assumed. This assumption is based on the following factors:
+                * `Download Directory` preference
+                * the filename, as determined by the external download tool
+
+    >   * _fallback behavior when 'cancel' is chosen in interactive dialog_<br>
           checkbox that
           * when:
             * _interactively identify each partial/incomplete download file_ is `checked`
