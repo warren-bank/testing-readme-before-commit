@@ -28,7 +28,9 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     including those that aren't representable using JSON.<br>
     examples:
     * comments
-    * regex patterns (literal [ie: perl] notation: `//`, object constructor: `new RegExp('')`)
+    * regex patterns
+      * literal <sub>(ie: perl)</sub> notation: `//`
+      * object constructor: `new RegExp('')`
     * functions
   * the declaration for the data structure can contain inline code that is interpolated once, during evaluation.<br>
     examples:
