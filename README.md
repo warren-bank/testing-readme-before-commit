@@ -298,88 +298,74 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
         * off:<br>disable this feature entirely
 
       * Path to Rules File
+        > default: ''
 
         >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
 
-        > default: ''
-
       * Watch Interval (ms, 0 to disable)
+        > default: `0` (off)
 
         useful while writing/testing new rules.<br>
         this feature will watch the rules file for changes, and reload its contents as needed.
-
-        > default: `0` (off)
 
     * _HTTP Responses (inbound)_:
       * Enabled
-
-        on/off toggle
-
-        on: intercept _HTTP Responses_ and apply its corresponding set of rules<br>
-        off: disable this feature entirely
-
         > default: on
 
+        on/off toggle
+        * on:<br>intercept _HTTP Responses_ and apply its corresponding set of rules
+        * off:<br>disable this feature entirely
+
       * Path to Rules File
+        > default: ''
 
         >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
 
-        > default: ''
-
       * Watch Interval (ms, 0 to disable)
+        > default: `0` (off)
 
         useful while writing/testing new rules.<br>
         this feature will watch the rules file for changes, and reload its contents as needed.
-
-        > default: `0` (off)
 
   * __output: _save()___
     * _HTTP Request Persistence_:
       * Enabled
+        > default: on
 
         on/off toggle
-
         * on:<br>the `save()` helper function will save a record of the request to `Output File`
         * off:<br>disable this feature entirely
 
-        > default: on
-
       * Path to Output File
+        > default: ''
 
         >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
 
-        > default: ''
-
       * Maximum Number of Saved Requests
+        > default: `10`
 
         this feature is intended to prevent the `Output File` from growing too large
 
         * `> 0`:<br>when a request record is saved to `Output File`, the data is prepended. If after this addition there are more records stored in the file (ie: `N`) than the specified number of records (ie: `X`), then only the first `X` are retained&hellip; and the trailing `N-X` are removed.
         * `0`:<br>allow the file to grow without any limitation.
 
-        > default: `10`
-
   * __tools to _replay_ saved requests__
     * _common settings_:
       * Path to Download Directory
+        > default: `{DfltDwnld}`
 
         >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
-
-        > default: `{DfltDwnld}`
 
     * _wget_:
       * Path to `wget` executable
+        > default: `/usr/bin/wget`
 
         >  <sub>refer to __Comments / Implementation Notes__ for advanced usage</sub>
 
-        > default: `/usr/bin/wget`
-
       * Command-Line Options for `wget` executable
-
         > default: `-c -nd --content-disposition --no-http-keep-alive --no-check-certificate -e robots=off --progress=dot:binary`
 
     * _curl_:
-
       > a reference implementation that adds support for this tool exists in a separate branch: [_replay/curl_](https://github.com/warren-bank/moz-rewrite/tree/replay/curl)
 
       > this hasn't been merged into the `master` branch due to a small incompatability, which is described pretty well across both:
