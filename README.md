@@ -404,7 +404,8 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
         * list of all saved requests<br>
           for each, a checkbox is followed by the corresponding URL
     > * common form field controls
-        * _replay selected requests using.._<br>
+        * _replay selected requests using.._
+
           > button that displays a list of all supported download tools<br>
             this list currently contains:
             * wget
