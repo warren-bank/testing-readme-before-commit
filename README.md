@@ -292,10 +292,10 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     * _HTTP Requests (outbound)_:
       * Enabled
 
-        on/off toggle
+          on/off toggle
 
-        on: intercept _HTTP Requests_ and apply its corresponding set of rules<br>
-        off: disable this feature entirely
+        * on:<br>intercept _HTTP Requests_ and apply its corresponding set of rules<br>
+        * off:<br>disable this feature entirely
 
         > default: on
 
@@ -354,7 +354,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 
       * Maximum Number of Saved Requests
 
-        this feature is intended to prevent the `Output File` from growing too large.<br>
+        this feature is intended to prevent the `Output File` from growing too large
 
         * `> 0`:<br>when a request record is saved to `Output File`, the data is prepended. If after this addition there are more records stored in the file (ie: `N`) than the specified number of records (ie: `X`), then only the first `X` are retained&hellip; and the trailing `N-X` are removed.
         * `0`:<br>allow the file to grow without any limitation.
