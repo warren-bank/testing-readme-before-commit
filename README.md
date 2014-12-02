@@ -293,10 +293,9 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
       * Enabled
 
         on/off toggle
-        * on:<br>intercept _HTTP Requests_ and apply its corresponding set of rules<br>
-        * off:<br>disable this feature entirely
+          * on:<br>intercept _HTTP Requests_ and apply its corresponding set of rules<br>
+          * off:<br>disable this feature entirely
 
-        >
         > default: on
 
       * Path to Rules File
