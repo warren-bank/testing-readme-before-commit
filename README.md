@@ -375,22 +375,18 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 ## Hidden Preferences
 
   * `extensions.Moz-Rewrite.debug`
+    > default: `false`
 
     _boolean_
-
-    `true`: enables debug log messages to be printed to the `Browser Console`
-    `false`: suppresses these log messages
-
-    > default: `false`
+    * `true`:<br>enables debug log messages to be printed to the `Browser Console`
+    * `false`:<br>suppresses these log messages
 
   * `extensions.Moz-Rewrite.case_sensitive`
+    > default: `false`
 
     _boolean_
-
-    `true`: the alphabetic case of the URL and its components is preserved
-    `false`: the URL and its components are always normalized to lowercase, which allows regex patterns to be written in lowercase and omit a _case insensitive_ flag
-
-    > default: `false`
+    * `true`:<br>the alphabetic case of the URL and its components is preserved
+    * `false`:<br>the URL and its components are always normalized to lowercase, which allows regex patterns to be written in lowercase and omit a _case insensitive_ flag
 
 ## Dialog Windows
 
