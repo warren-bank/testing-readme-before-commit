@@ -110,7 +110,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 
   * _always available_
     * `save()`<br>
-      prepends a record of the current request to the `Output File`<br>
+      prepends a record of the current request to the `Output File`.<br>
       this record will be available for _replay_ via the _view/replay saved requests_ dialog window.
 
     * `atob(string_base64_encoded)`<br>
