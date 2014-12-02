@@ -404,11 +404,11 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
         * list of all saved requests<br>
           for each, a checkbox is followed by the corresponding URL
     > * common form field controls
-        * _replay selected requests using.._<br>
+        * _replay selected requests using.._<br><br>
           button that displays a list of all supported download tools<br>
           this list currently contains:
           * wget
-        * _interactively identify each partial/incomplete download file_<br>
+        * _interactively identify each partial/incomplete download file_<br><br>
           checkbox that
           * when:
             * `checked`
@@ -418,7 +418,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
             * an interactive `file picker` dialog to open for each of the selected _saved HTTP Requests_, which allows the user to resume broken downloads to files having a file path that differs from what would be assumed. This assumption is based on the following factors:
               * `Download Directory` preference
               * the filename, as determined by the external download tool
-        * _fallback behavior when 'cancel' is chosen in interactive dialog_<br>
+        * _fallback behavior when 'cancel' is chosen in interactive dialog_<br><br>
           checkbox that
           * when:
             * _interactively identify each partial/incomplete download file_ is `checked`
