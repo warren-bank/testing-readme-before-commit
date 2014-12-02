@@ -385,7 +385,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     > default: `false`
 
     _boolean_
-    * `true`:<br>the alphabetic case of the URL and its components is preserved
+    * `true`:<br>the alphabetic case of the URL and its components are preserved
     * `false`:<br>the URL and its components are always normalized to lowercase, which allows regex patterns to be written in lowercase and omit a _case insensitive_ flag
 
 ## Dialog Windows
