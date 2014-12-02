@@ -42,7 +42,9 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
   * rules are evaluated for every request and/or response.
   * when functions are called, there will be contextual variables as well as helper functions in scope.
   * the contextual variables will allow the function to return a value that is dependent upon the state of the request/response.
-  * the helper functions provide a library for tasks that are commonly used to generate HTTP header values.
+  * the helper functions provide a library for tasks that either:
+    * are commonly used to generate HTTP header values
+    * provide enhanced capabilities, unrelated to modifying HTTP header values
 * where inline javascript code is present, the javascript will only be evaluated once.
   * this occurs when the rules are read from an external file and evaluated into a javascript array of rule objects.
   * when this evaluation occurs, there is no contextual request or response.. so there are no contextual variables in scope.
