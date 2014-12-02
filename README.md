@@ -146,8 +146,12 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
       returns the result of hashing the input string using the `sha512` crypto hash function
 
   * _request only_
-    * `redirectTo(string_URI)`
-    * `cancel()`
+    * `redirectTo(string_URI)`<br>
+      hint: `window.location = string_URI`
+
+    * `cancel()`<br>
+      completely cancels the request.<br>
+      for a good example, check out the [recipe: `light weight ad-blocker`](https://github.com/warren-bank/moz-rewrite/blob/data/recipe-book/request/light%20weight%20ad-blocker.js)
 
   * _response only_
 
