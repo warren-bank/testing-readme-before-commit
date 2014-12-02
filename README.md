@@ -116,8 +116,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     * `atob(string_base64_encoded)`<br>
       decodes a string of data which has been encoded using base-64 encoding.
 
-    * `base64_decode(string_base64_encoded)`
-
+    * `base64_decode(string_base64_encoded)`<br>
         >  <sub>alias for: `atob`</sub>
 
     * `btoa(string_value)`<br>
@@ -129,14 +128,19 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 
     * `md2(string_value)`<br>
       returns the result of hashing the input string using the `md2` crypto hash function
+
     * `md5(string_value)`<br>
       returns the result of hashing the input string using the `md5` crypto hash function
+
     * `sha1(string_value)`<br>
       returns the result of hashing the input string using the `sha1` crypto hash function
+
     * `sha256(string_value)`<br>
       returns the result of hashing the input string using the `sha256` crypto hash function
+
     * `sha384(string_value)`<br>
       returns the result of hashing the input string using the `sha384` crypto hash function
+
     * `sha512(string_value)`<br>
       returns the result of hashing the input string using the `sha512` crypto hash function
 
