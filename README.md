@@ -501,7 +501,7 @@ This [spoon](https://github.com/warren-bank/moz-rewrite-amo) is for [AMO](https:
   * AMO doesn't accept/host addons that include `eval` for security related considerations.
   * A subset of (less technical) users would probably never make use of any advanced scripting features.
     This group would likely prefer a version that doesn't expose them to __any__ possible security risk.
-  * Ultimately, I'd like to refactor the `Sandbox` classes in this project to leverage the Mozilla `Cu.Sandbox` framework. However, the [Mozilla implementation appears to have broken since Firefox 17.0](https://bugzilla.mozilla.org/show_bug.cgi?id=1106165).
+  * Ultimately, I'd like to refactor the `Sandbox` classes in this project to leverage the Mozilla `Cu.Sandbox` framework. However, the [Mozilla implementation appears to have been broken since Firefox 17.0](https://bugzilla.mozilla.org/show_bug.cgi?id=1106165).
 
 ## License
   > [GPLv2](http://www.gnu.org/licenses/gpl-2.0.txt)
