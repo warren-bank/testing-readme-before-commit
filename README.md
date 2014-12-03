@@ -520,7 +520,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 [This spoon](https://github.com/warren-bank/moz-rewrite-amo) is for [AMO](https://addons.mozilla.org/en-US/firefox/addon/rewrite-http-headers/), as well as a specific subset of users.
 
   * I made a [one-off fork](https://github.com/warren-bank/moz-rewrite-amo) (from [v1.01](https://github.com/warren-bank/moz-rewrite/tree/v1.01)) that is __so__ intentionally crippled that it doesn't even belong in this repo.
-  * The reason behind doing so was the desire to host a version on [AMO &#40;<b>a</b>ddons.<b>m</b>ozilla.<b>o</b>rg &#41;](https://addons.mozilla.org/en-US/firefox/addon/rewrite-http-headers/).
+  * The reason behind doing so was the desire to host a version on [AMO &#40;<b>a</b>ddons.<b>m</b>ozilla.<b>o</b>rg&#41;](https://addons.mozilla.org/en-US/firefox/addon/rewrite-http-headers/).
   * The coding methodology that makes this tool so very powerful is, fundamentally, the strategic usage of the javascript `eval` statement.
   * AMO doesn't accept/host addons that include `eval` for security related considerations.
   * A subset of (less technical) users would probably never make use of any advanced scripting features.
