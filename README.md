@@ -421,15 +421,15 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
               * one or more _saved HTTP Requests_ are selected
               * a download tool is chosen/activated from the list
     >     > * if `checked`:
-              * for each of the selected _saved HTTP Requests_, an interactive `file picker` dialog will open and allow the user to choose the file path for the download.<br>
-                this workflow allows using the external download tool to be used to save data to arbitrary paths within the filesystem,<br>
-                rather than only to the `Download Directory`.<br>
-                this is particularly useful for when the browser begins a download, but fails to complete.<br>
-                in such a case,
-                * if the request was saved&hellip;<br>
-                  or if the browser can re-request the download, and this subsequent request is saved&hellip;<br>
-                  <sub>without actually saving the file, and certainly __NOT__ over writing the previously downloaded partial/incomplete file</sub>
-                * then the interactive dialog would allow the user to browse for this partial/incomplete file download
+              * for each of the selected _saved HTTP Requests_, an interactive `file picker` dialog will open and allow the user to choose the file path for the download.
+                * this workflow allows using the external download tool to be used to save data to arbitrary paths within the filesystem,<br>
+                  rather than only to the `Download Directory`.
+                * this is particularly useful for when the browser begins a download, but fails to complete.<br>
+                  in such a case,
+                  * if the request was saved&hellip;<br>
+                    or if the browser can re-request the download, and this subsequent request is saved&hellip;<br>
+                    <sub>without actually saving the file, and certainly __NOT__ over writing the previously downloaded partial/incomplete file</sub>
+                  * then the interactive dialog would allow the user to browse for this partial/incomplete file download
     >     > * if not `checked`:
               * for each of the selected _saved HTTP Requests_, the chosen download tool will begin saving/resuming the requested data.
                 * this data will be saved to a file in the `Download Directory`
