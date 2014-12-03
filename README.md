@@ -45,7 +45,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
   * rules are evaluated for every request and/or response.
   * when functions are called, there will be contextual variables as well as helper functions in scope.
   * the contextual variables will allow the function to return a value that is dependent upon the state of the request/response.
-  * the helper functions provide a library to perform tasks that either:
+  * the helper functions provide a library to perform tasks that:
     * are commonly used to generate HTTP header values
     * provide enhanced capabilities, unrelated to modifying HTTP header values
 * where inline javascript code is present, the javascript will only be evaluated once.
@@ -147,7 +147,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
   * _both requests and responses_
     * `save()`<br>
       prepends a record of the current request to the `Output File`.<br>
-      this record will be available for _replay_ via the _view/replay saved requests_ dialog window.
+      this record will be available for _replay_ via the ___view/replay saved requests___ dialog window.
 
   * _request only_
     * `redirectTo(string_URI)`<br>
