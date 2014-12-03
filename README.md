@@ -408,7 +408,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 
     >     > button that displays a list of all supported download tools<br>
             this list currently contains:
-            * wget
+    >     > * wget
 
     >   * _interactively identify each partial/incomplete download file_
 
