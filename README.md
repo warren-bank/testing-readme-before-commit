@@ -456,8 +456,10 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 
   * data sets are stored in external files.<br>
     this allows them to be maintained using any text editor.
+
   * the addon asks to know the file path to each data set.<br>
     one for requests, one for responses.
+
   * there are two ways to specify a file path:
     * browse for file, which stores an absolute path.
     * manually enter the path, which is parsed in such a way that portable/relative paths are supported.<br>
@@ -493,6 +495,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
         * `{ProfD}/moz-rewrite/responses.js`
         * `{ProfD}/moz-rewrite/saved_requests.txt`
         * `{ProfD}/moz-rewrite/downloads`
+
   * when enabled (in addon preferences), the addon will watch input data files for updates.
   * when the path to an input data file is changed (in addon preferences),<br>
     or an input data file having a watched path has been updated (identified by its _last modification date_):
