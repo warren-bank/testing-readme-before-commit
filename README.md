@@ -417,7 +417,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
               * `checked`
               * one or more _saved HTTP Requests_ are selected
               * a download tool is actived from the list
-            * triggers:
+    >     > * triggers:
               * an interactive `file picker` dialog to open for each of the selected _saved HTTP Requests_, which allows the user to resume broken downloads to files having a file path that differs from what would be assumed. This assumption is based on the following factors:
                 * `Download Directory` preference
                 * the filename, as determined by the external download tool
