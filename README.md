@@ -14,6 +14,9 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
   * cancel the request
   * redirect the request
   * save a record of the request
+* saved requests can:
+  * be _replayed_ using (supported) external download tools.<br>
+    _replayed_ requests include all the HTTP headers and POST data in the original/saved request.
 
 ## Features
 
@@ -42,7 +45,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
   * rules are evaluated for every request and/or response.
   * when functions are called, there will be contextual variables as well as helper functions in scope.
   * the contextual variables will allow the function to return a value that is dependent upon the state of the request/response.
-  * the helper functions provide a library for tasks that either:
+  * the helper functions provide a library to perform tasks that either:
     * are commonly used to generate HTTP header values
     * provide enhanced capabilities, unrelated to modifying HTTP header values
 * where inline javascript code is present, the javascript will only be evaluated once.
@@ -109,10 +112,6 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 ## Helper Functions <sub>(in scope when functions are called)</sub>
 
   * _always available_
-    * `save()`<br>
-      prepends a record of the current request to the `Output File`.<br>
-      this record will be available for _replay_ via the _view/replay saved requests_ dialog window.
-
     * `atob(string_base64_encoded)`<br>
       decodes a string of data which has been encoded using base-64 encoding.
 
@@ -144,6 +143,11 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 
     * `sha512(string_value)`<br>
       returns the result of hashing the input string using the `sha512` crypto hash function
+
+  * _both requests and responses_
+    * `save()`<br>
+      prepends a record of the current request to the `Output File`.<br>
+      this record will be available for _replay_ via the _view/replay saved requests_ dialog window.
 
   * _request only_
     * `redirectTo(string_URI)`<br>
@@ -401,12 +405,12 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
   * `Tools -> moz-rewrite -> view/replay saved requests`
 
     > * _saved HTTP Requests_:
-        * list of all saved requests<br>
-          for each, a checkbox is followed by the corresponding URL
+        * list of all saved requests.<br>
+          for each, a checkbox is followed by the corresponding URL.
     > * common form field controls
     >   * _replay selected requests using.._
 
-    >     > button that displays a list of all supported download tools<br>
+    >     > button that displays a list of all supported download tools.<br>
             this list currently contains:
     >     > * wget
 
@@ -414,13 +418,26 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 
     >     > checkbox that
     >     > * when:
-              * `checked`
               * one or more _saved HTTP Requests_ are selected
-              * a download tool is actived from the list
-    >     > * triggers:
-              * an interactive `file picker` dialog to open for each of the selected _saved HTTP Requests_, which allows the user to resume broken downloads to files having a file path that differs from what would be assumed. This assumption is based on the following factors:
-                * `Download Directory` preference
-                * the filename, as determined by the external download tool
+              * a download tool is chosen/activated from the list
+    >     > * if `checked`:
+              * for each of the selected _saved HTTP Requests_, an interactive `file picker` dialog will open and allow the user to choose the file path for the download.<br>
+                this workflow allows using the external download tool to be used to save data to arbitrary paths within the filesystem,<br>
+                rather than only to the `Download Directory`.<br>
+                this is particularly useful for when the browser begins a download, but fails to complete.<br>
+                in such a case,
+                * if the request was saved&hellip;<br>
+                  or if the browser can re-request the download, and this subsequent request is saved&hellip;<br>
+                  <sub>without actually saving the file, and certainly __NOT__ over writing the previously downloaded partial/incomplete file</sub>
+                * then the interactive dialog would allow the user to browse for this partial/incomplete file download
+    >     > * if not `checked`:
+              * for each of the selected _saved HTTP Requests_, the chosen download tool will begin saving/resuming the requested data.
+                * this data will be saved to a file in the `Download Directory`
+                * the filename will be determined by the external download tool.<br>
+                  factors that the tool may take into consideration:
+                  * a filename component of the requested URL
+                  * a 'content-disposition' header of the response
+                  * command-line options for the tool (in addon preferences)
 
     >   * _fallback behavior when 'cancel' is chosen in interactive dialog_
 
@@ -469,12 +486,16 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
           * `{Home}`: <br>`%USERPROFILE%`
           * `{DfltDwnld}`: <br>`%USERPROFILE%\Downloads`
           * `{TmpD}`: <br>`%TEMP%`
-      * so.. if portability is a concern, then the following file paths should work nicely:
+      * so.. if portability is a concern, then the following file/directory paths should work nicely:
         * `{ProfD}/moz-rewrite/requests.js`
         * `{ProfD}/moz-rewrite/responses.js`
-  * the addon will (optionally) watch these files for updates.
-  * when a file path is changed (in addon preferences),<br>
-    or a watched file path has been updated (identified by its _last modification date_):
+        * `{ProfD}/moz-rewrite/saved_requests.txt`
+        * `{ProfD}/moz-rewrite/downloads`
+
+            >  <sub>_(note: the specified paths must already exist; files/directories __won't__ be created.)_</sub>
+  * when enabled (in addon preferences), the addon will watch input data files for updates.
+  * when the path to an input data file is changed (in addon preferences),<br>
+    or an input data file having a watched path has been updated (identified by its _last modification date_):
     * the file contents are read into a string
     * the string is evaluated as javascript
     * the return value is validated for having the proper schema
@@ -493,15 +514,29 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 ## A fork that isn't a fork&hellip;
 ##### a spoon, maybe?
 
-This [spoon](https://github.com/warren-bank/moz-rewrite-amo) is for [AMO](https://addons.mozilla.org/en-US/firefox/addon/rewrite-http-headers/), as well as a specific subset of users.
+[This spoon](https://github.com/warren-bank/moz-rewrite-amo) is for [AMO](https://addons.mozilla.org/en-US/firefox/addon/rewrite-http-headers/), as well as a specific subset of users.
 
   * I made a [one-off fork](https://github.com/warren-bank/moz-rewrite-amo) (from [v1.01](https://github.com/warren-bank/moz-rewrite/tree/v1.01)) that is __so__ intentionally crippled that it doesn't even belong in this repo.
-  * The reason behind doing so was the desire to host a version on [AMO](https://addons.mozilla.org/en-US/firefox/addon/rewrite-http-headers/).
+  * The reason behind doing so was the desire to host a version on [AMO (__a_ddons.__m__ozilla.__o__rg)](https://addons.mozilla.org/en-US/firefox/addon/rewrite-http-headers/).
   * The coding methodology that makes this tool so very powerful is, fundamentally, the strategic usage of the javascript `eval` statement.
   * AMO doesn't accept/host addons that include `eval` for security related considerations.
   * A subset of (less technical) users would probably never make use of any advanced scripting features.
     This group would likely prefer a version that doesn't expose them to __any__ possible security risk.
-  * Ultimately, I'd like to refactor the `Sandbox` classes in this project to leverage the Mozilla `Cu.Sandbox` framework. However, the [Mozilla implementation appears to have been broken since Firefox 17.0](https://bugzilla.mozilla.org/show_bug.cgi?id=1106165).
+
+## Roadmap
+
+  * I may choose to update the Sandbox classes in this project to make use of the Mozilla Cu.Sandbox and Cu.evalInSandbox APIs
+    * pros:
+      * would (potentially) allow [moz-rewrite](https://github.com/warren-bank/moz-rewrite) to be hosted on AMO
+    * cons:
+      * the implementation of these Mozilla APIs appears to have been [broken since Firefox 17.0](https://bugzilla.mozilla.org/show_bug.cgi?id=1106165)
+      * I have mixed feelings about whether the reduced security risk would be worth giving up the ability to run protected code from within user-defined functions
+        * for some 3rd party to use this addon as a method of stealing information, they would need to:
+          * reconfigure the addon preferences
+          * store data files on local hard disk
+        * these changes would be simple to identify
+        * in order to make these changes, the machine would already need to be compromised&hellip;<br>
+          so what are we really saving?
 
 ## License
   > [GPLv2](http://www.gnu.org/licenses/gpl-2.0.txt)
