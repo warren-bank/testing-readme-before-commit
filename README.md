@@ -492,7 +492,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
         * `{ProfD}/moz-rewrite/saved_requests.txt`
         * `{ProfD}/moz-rewrite/downloads`
 
-            >  <sub>_(note: the specified paths must already exist; files/directories __won't__ be created.)_</sub>
+            >  <sub>_(note: the specified paths must already exist; files/directories **won't** be created.)_</sub>
   * when enabled (in addon preferences), the addon will watch input data files for updates.
   * when the path to an input data file is changed (in addon preferences),<br>
     or an input data file having a watched path has been updated (identified by its _last modification date_):
