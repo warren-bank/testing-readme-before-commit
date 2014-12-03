@@ -400,7 +400,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
         * `Tools -> Add-ons`
           * `Extensions`
             * `moz-rewrite -> Options`
-    > * provides a graphical interface for the user to apply changes to the values of (non-hidden) `User Preferences`
+    > * provides a graphical interface for the user to apply changes to the values of (non-hidden) addon preferences
 
   * `Tools -> moz-rewrite -> view/replay saved requests`
 
