@@ -422,17 +422,18 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
                 * `Download Directory` preference
                 * the filename, as determined by the external download tool
 
-    >   * _fallback behavior when 'cancel' is chosen in interactive dialog_<br>
-          checkbox that
-          * when:
-            * _interactively identify each partial/incomplete download file_ is `checked`
-            * an interactive `file picker` dialog is closed by the user without having selected a filepath
-              * `cancel` button
-              * `close window` (ie: "X") button
-          * if `checked`:
-            * proceed with download and save to default directory
-          * if not `checked`:
-            * skip _replay_ of the specific saved request
+    >   * _fallback behavior when 'cancel' is chosen in interactive dialog_
+
+    >     > checkbox that
+    >     > * when:
+              * _interactively identify each partial/incomplete download file_ is `checked`
+              * an interactive `file picker` dialog is closed by the user without having selected a filepath
+                * `cancel` button
+                * `close window` (ie: "X") button
+    >     > * if `checked`:
+              * proceed with download and save to default directory
+    >     > * if not `checked`:
+              * skip _replay_ of the specific saved request
 
 ## Comments / Implementation Notes
 
