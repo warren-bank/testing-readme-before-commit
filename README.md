@@ -413,7 +413,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
     >   * _interactively identify each partial/incomplete download file_
 
     >     > checkbox that
-            * when:
+    >     > * when:
               * `checked`
               * one or more _saved HTTP Requests_ are selected
               * a download tool is actived from the list
