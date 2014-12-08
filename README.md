@@ -22,7 +22,7 @@ Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily
 
 * none
 
-## Data Structure Examples
+## Data Structure <sub>(examples)</sub>
 
 * sample _request_ rule(s):
 
