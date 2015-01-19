@@ -130,6 +130,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
   * General Settings
 
     * Syntax Highlights
+
       >* on/off toggle
       >
       >  on: Builds an HTML DOM structure that supports presenting the data within a collapsible tree.<br>
@@ -150,6 +151,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
       >  > default: 'solarized_dark'
 
     * Optional Features
+
       >* use non-native JSON parser to support numbers that are too large to represent using primitive JavaScript data types
       >
       >  > default: true
@@ -163,7 +165,6 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
     * Strings
 
       >* `[false]` replace (`\n`) newline with HTML: `<br>` tag
-      >
       >* `[false]` replace (`\t`) tab with 4 spaces
       >
       >* `[true] ` replace urls with HTML: `<a>` tag
@@ -189,6 +190,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
   * Display: Styles
 
     * CSS
+
       >* font-family
       >
       >  the (internal) stylesheet assigns a default value.<br>
