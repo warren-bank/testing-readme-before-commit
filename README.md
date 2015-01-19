@@ -1,94 +1,323 @@
-# [moz-rewrite-amo](https://github.com/warren-bank/moz-rewrite-amo)
+# JSON-DataView
+Firefox add-on that displays JSON data in a collapsible tree structure with syntax highlights.
 
-Firefox add-on that functions as a light-weight (pseudo) rules-engine for easily modifying HTTP headers in either direction
+## Screenshot
+
+![JSONP response in Google data feed](https://raw.githubusercontent.com/warren-bank/moz-json-data-view/screenshots/01.png)
+
+## Usage
+
+  * the `expand` (+) and `collapse` (-) buttons are sensitive to mouse click
+    * without any modifier key:<br>
+      the action is applied to the selected tree node
+    * while pressing any of the following modifier keys: `Ctrl` or `Shift`<br>
+      the action is applied to the selected tree node, as well as recursively to all nodes that descend from the selected tree node
 
 ## Summary
 
-* for security reasons, AMO (<b>a</b>ddons.<b>m</b>ozilla.<b>o</b>rg) generally won't accept an addon that uses the javascript `eval` statement
-* [moz-rewrite](https://github.com/warren-bank/moz-rewrite) needs to use `eval`
-  * conversion of the rules file contents into a data set
-  * running functions within the data set (necessary for dynamic scoping)
-* in order for other developers to know about this addon, it really needs to be hosted on AMO
-* this project is a compromise
-  * a slimmed-down version of [moz-rewrite](https://github.com/warren-bank/moz-rewrite)
-  * most of its advanced functionality is removed
-  * there's no potential for abuse, since the data will need to be proper JSON
+  * [jsonTreeViewer](https://github.com/summerstyle/jsonTreeViewer) served as a solid starting point for creating a DOM structure from JSON data
+    >* the original web application is very well coded
+    >* its core logic has been separated and abstracted into a library
+    >* enhancements have been gradually added over time
 
-## Contextual Variables
+  * [highlight.js](https://github.com/isagalaev/highlight.js) is used to provide syntax highlighting to the DOM structure
+    >* specifically, only its css files are used
 
-* none
+  * [js-beautify](https://github.com/beautify-web/js-beautify) is used to add whitespace for readability when syntax highlighting is turned off
 
-## Helper Functions
+  * [bignumber.js](https://github.com/MikeMcl/bignumber.js) and [json-bigint](https://github.com/sidorares/json-bigint) are used to provide an alternate JSON parser
+    >* this parser provides a way to work around the potential pitfall that:
+    >  * JSON data can specify numeric values that are arbitrarily large
+    >  * the primitive JavaScript `number` data type has constraints on the possible range of values that it can hold<br>
+    >    <sub>( language limitations are described in detail @ [issue #4](https://github.com/warren-bank/moz-json-data-view/issues/4) )</sub>
+    >
+    >* it allows the add-on the ability to retain this fidelity
 
-* none
+## Detection methodology
 
-## Data Structure <sub>(examples)</sub>
+  * This add-on will modify the display of all server responses (or local files) that satisfy all of the following criteria:
+    * none of the following short-circuit conditions are true:
+      * the location protocol is 'view-source:'
+      * the location hash contains: `No-JSON-DataView`
 
-* sample _request_ rule(s):
+        > notes:
+        > * not case sensitive
+        > * can be combined with other hash tokens by using one of the separators: `/,`
 
-  > analogous to:
-  > * [this _moz-rewrite_ example](https://github.com/warren-bank/moz-rewrite#user-content-simple-examples)
+    * either:
+      * the HTTP header 'content-type' is one of:
+        * 'application/json'
+        * 'text/json'
+        * 'text/x-json'
+      * or both must be true:
+        * the HTTP header 'content-type' is one of:
+          * 'application/javascript'
+          * 'application/x-javascript'
+          * 'text/javascript'
+          * 'text/plain'
+        * and one of the following additional conditions are met:
+          * the location pathname ends with '.json'
+          * the location querystring contains 'callback=',
+            and the response is structured as a JSONP callback function
+          * the location hash contains: `JSON-DataView`
 
-```javascript
-[
-    {
-        "url" : "^.*$",
-        "headers" : {
-            "X-Custom-Sample-Header-01" : "Foo",
-            "X-Custom-Sample-Header-02" : "Bar",
-            "X-Custom-Sample-Header-03" : "Baz"
-        }
-    },
-    {
-        "url" : "^https:",
-        "headers" : {
-            "X-Custom-Sample-Header-01" : false,
-            "X-Custom-Sample-Header-02" : false,
-            "X-Custom-Sample-Header-03" : false
-        },
-        "stop": true
-    },
-    {
-        "url" : "^.*$",
-        "headers" : {
-            "X-Custom-Sample-Header-01" : "Hello",
-            "X-Custom-Sample-Header-03" : false
-        }
-    }
-]
-```
+## Comments
 
-* sample _response_ rule(s):
+  * It's become pretty standard practice for jsonp responses to contain javascript comments.
+    The comments serve as a form of protection against an Adobe Flash Player exploit that uses jsonp to bypass the same-origin security policy. This [attack](https://github.com/mikispag/rosettaflash) is known as [Rosetta Flash](http://miki.it/blog/2014/7/8/abusing-jsonp-with-rosetta-flash/).
 
-  > analogous to:
-  > * [a portion of this _moz-rewrite_ recipe](https://github.com/warren-bank/moz-rewrite/blob/data/recipe-book/response/disable%20CSP.js)
+  * When processing the response to determine whether it contains a valid jsonp callback function,
+    the following javascript statements will be ignored:
+    * leading and trailing comments (in both `//` and `/* */` formats)
+    * leading validation of the callback function, using any of the patterns:
+      * `cb && cb(json)`
+      * `typeof cb === 'function' && cb(json)`
 
-  > mentioned as a solution to issue(s):
-  > * [_HTTP Archive Viewer_ issue: 1](https://github.com/warren-bank/moz-harviewer/issues/1)
-  > * [_JSON-DataView_ issue: 5](https://github.com/warren-bank/moz-json-data-view/issues/5#issuecomment-63533063)
-  > * [_JSON-DataView_ issue: 7](https://github.com/warren-bank/moz-json-data-view/issues/7#issuecomment-64692997)
+    After the format of the response is validated, the parameter string is extracted from the callback function and treated as a string of JSON data.
 
-```javascript
-[
-    {
-        "url" : "#(?:[^/,]+[/,])*(?:HTTP-Archive-Viewer|JSON-DataView)(?:[/,]|$)",
-        "headers" : {
-            "Content-Type"              : "application/json",
-            "Content-Disposition"       : null,
-            "Content-Security-Policy"   : null,
-            "X-Content-Security-Policy" : null
-        }
-    }
-]
-```
+  *	In the detection methodology, the inspection of the location hash for special `control tokens`
+    provides a user the added ability to explicitly override the normal detection logic.
 
-###### differences between this data structure and the format used by [moz-rewrite](https://github.com/warren-bank/moz-rewrite#user-content-data-structure):
-  * the `url` regex pattern is stored in a string
-  * `headers` is always a hash:
+    This can be useful in a number of different circumstances. For instance:
+      * A web server response is known to contain JSON data;
+        however, the 'content-type' headers are too generic to pass normal detection.
+        This would normally be the result of a misconfigured web server,
+        or poorly written backend script.
 
-      >  [string] header name &rArr; [string, false, null] header value
-  * `stop` (if present) must be a boolean
+        > the solution would be to manually append the `control token` that explicitly signals
+          to the add-on that it should take action: `#JSON-DataView`
+
+      * Another scenario (that I [recently ran into](https://github.com/warren-bank/moz-harviewer)) is when two different add-ons
+        are both triggered to take action on the same page.
+
+        JSON is a very general-purpose way to structure/serialize/transmit data.
+
+        There are many `domain specific` data formats that are defined by a JSON schema.
+        One such example is the [HTTP Archive format](http://www.softwareishard.com/blog/har-12-spec/).
+
+        If there's an add-on that specifically targets one such format,
+        then whether or not there is the potential for conflict between the two add-ons
+        running at the same time depends on the particular data format.
+        * If it has been assigned its own 'content-type' (and if servers tend to use it),
+          then there won't be any conflict.
+        * However, if this data format is sent with a generic JSON-ish 'content-type',
+          then both add-ons will most likely be trying to detect the same conditions.
+
+        This is where having the option to manually add `control tokens` is a very good thing.
+
+        Concrete example:
+        * both add-ons are installed:
+          * [JSON-DataView](https://github.com/warren-bank/moz-json-data-view)
+          * [HTTP Archive Viewer](https://github.com/warren-bank/moz-harviewer)
+        * a HAR file is requested from a server
+        * the 'content-type' of the response is: `application/json`
+        * to view the HAR data in a rich visualization tool
+          (with charts and graphs, etc) using the `HTTP Archive Viewer` add-on,
+          the following `control tokens` could be used:
+            * http://httparchive.webpagetest.org/export.php?test=140801_0_8JH&run=1&cached=0&pretty=1#HTTP-Archive-Viewer/No-JSON-DataView
+        * conversely, to take a deep dive into the raw data using the `JSON-DataView` add-on,
+          the following `control tokens` could be used:
+            * http://httparchive.webpagetest.org/export.php?test=140801_0_8JH&run=1&cached=0&pretty=1#No-HTTP-Archive-Viewer/JSON-DataView
+        * note that:
+            * order of the `control tokens` doesn't matter
+            * they are both case insensitive
+
+              > the pretty capitalization is just for the README
+
+## User Preferences:
+
+  * General Settings
+
+    * Syntax Highlights
+      >* on/off toggle
+      >
+      >  on: Builds an HTML DOM structure that supports presenting the data within a collapsible tree.<br>
+      >  off: Filters the JSON data through `js-beautify`, and outputs into a `<pre>` DOM element.
+      >
+      >  > default: on
+      >
+      >* expand all nodes
+      >
+      >  initialize all collapsible tree nodes to an expanded state (during page load)?
+      >
+      >  > default: false
+      >
+      >* choice of color scheme
+      >
+      >  options consist of those provided by [highlight.js](https://github.com/isagalaev/highlight.js/tree/master/src/styles)
+      >
+      >  > default: 'solarized_dark'
+
+    * Optional Features
+      >* use non-native JSON parser to support numbers that are too large to represent using primitive JavaScript data types
+      >
+      >  > default: true
+      >
+      >* display JSON syntax error when encountered by the JSON parser
+      >
+      >  > default: true
+
+  * Display: Data Values
+
+    * Strings
+      >* `[false]` replace (`\n`) newline with HTML: `<br>` tag
+      >* `[false]` replace (`\t`) tab with 4 spaces
+      >* `[true] ` replace urls with HTML: `<a>` tag
+      >* `[true] ` escape (`\` -&gt; `\\`) back-slash
+      >* `[false]` escape (`/` -&gt; `\/`) forward-slash
+      >* `[true] ` escape (`"` -&gt; `\"`) double quote
+      >* `[true] ` escape (not visible -&gt; `\r`) carriage return
+      >* `[true] ` escape (not visible -&gt; `\n`) line feed
+      >* `[true] ` escape (not visible -&gt; `\t`) tab
+      >* `[true] ` escape (not visible -&gt; `\f`) form feed
+      >* `[true] ` escape (not visible -&gt; `\b`) backspace
+      >* `[false]` escape (unicode representation -&gt; `\uNNNN`) non-ascii characters
+
+  * Display: Styles
+
+    * CSS
+      >* font-family
+      >
+      >  the (internal) stylesheet assigns a default value.<br>
+      >  this preference is optional;<br>
+      >  if assigned a value, it will override the stylesheet.
+      >
+      >  > default: ''
+      >
+      >* font-size
+      >
+      >  units: px
+      >
+      >  > default: 13
+      >
+      >* line-height
+      >
+      >  units: em
+      >
+      >  > default: 2
+      >
+      >* padding around the `<body>`
+      >
+      >  units: em
+      >
+      >  > default: 1
+      >
+      >* width of indentation for expanded children
+      >
+      >  units: em
+      >
+      >  > default: 1
+      >  >
+      >  > **NOTE:**<br>
+      >  > 1.5em is ADDED to the value specified through this setting.<br>
+      >  > This is the width required to ensure the expand/collapse button can be properly displayed.
+
+## Examples
+
+  > URLs to render in-browser after the add-on has been installed, which illustrate its functionality
+
+  * http://graph.facebook.com/coca-cola?callback=hello_world
+
+    > * Facebook's graph API
+
+    > * JSONP request/response
+
+    > * 'content-type' of response === 'application/json'
+
+      >> _note: this should be 'application/javascript' or 'text/javascript'_
+
+    > * format of response content:
+
+    >   ```javascript
+/**/ hello_world({});
+        ```
+
+  * http://www.google.com/calendar/feeds/developer-calendar@google.com/public/full?alt=json&callback=hello_world
+
+    >  * Google's calendar of developer events
+
+    >  * JSONP request/response
+
+    > * 'content-type' of response === 'text/javascript'
+
+    > * format of response content:
+
+    >   ```javascript
+// API callback
+hello_world({});
+        ```
+
+  * http://feeds.delicious.com/v2/json/popular?callback=hello_world
+
+    > * delicious.com data feed; top 10 most popular.. somethings
+
+    > * JSONP request/response
+
+    > * 'content-type' of response === 'text/javascript'
+
+    > * format of response content:
+
+    >   ```javascript
+hello_world([])
+        ```
+
+  * https://api.twitter.com/1.1/statuses/user_timeline.json
+
+    > * response contains JSON data
+
+    > * 'content-type' of response === 'application/json'
+
+  * http://gdata.youtube.com/feeds/api/standardfeeds/most_popular?alt=json&v=2
+
+    > * response contains JSON data
+
+    > * 'content-type' of response === 'application/json'
+
+  * http://headers.jsontest.com/?mime=1
+
+    > * response contains JSON data
+
+    > * 'content-type' of response === 'application/json'
+
+  * http://headers.jsontest.com/?mime=2
+
+    > * 'content-type' of response === 'application/javascript'
+
+    > * __IS NOT__ acted upon
+        * the criteria for the detection methodology are not met
+        * any of the following methods could be used to satisfy these criteria:
+          * wrap the response in a JSONP callback <sub>(requires cooperation server-side)</sub>:<br>
+                http://headers.jsontest.com/?mime=2&callback=hello_world
+          * add a `control token` to the hash:<br>
+                http://headers.jsontest.com/?mime=2#JSON-DataView
+
+  * http://headers.jsontest.com/?mime=3
+
+    > * 'content-type' of response === 'text/javascript'
+
+    > * __IS NOT__ acted upon
+        * same work-around methods could be used (as in the earlier example)
+
+  * http://headers.jsontest.com/?mime=4
+
+    > * 'content-type' of response === 'text/html'
+
+    > * __IS NOT__ acted upon
+        * Anecdotally, it appears that this 'content-type' is a special case.
+        * Under normal circumstances, an add-on is required to register itself to "convert streams" from the incoming 'content-type' values upon which it wishes to act. These "streams" are then (conditionally) "converted" into a 'text/html' request.
+        * It's unclear to me whether the internal logic used by the plugin architecture is that add-ons are invoked only on 'text/html' streams; and that this "stream conversion" API is a methodology by which to allow other streams to enter the workflow.
+        * All that I can say for certain is that the detection methodology doesn't specifically register this add-on to listen for 'text/html' streams, and yet it is invoked during their page-load processing.
+        * This being the case, one of the two aforementioned work-around methods would work:
+          * the presence of a `control token` [in the hash](http://headers.jsontest.com/?mime=4#JSON-DataView) will be seen and obeyed
+          * otherwise, the 'content-type' will fail to match a valid value and the add-on will short-circuit (exit immediately) before the querystring would normally be inspected for [a jsonp signature](http://headers.jsontest.com/?mime=4&callback=hello_world)
+
+  * http://headers.jsontest.com/?mime=5
+
+    > * 'content-type' of response === 'text/plain'
+
+    > * __IS NOT__ acted upon
+        * same work-around methods could be used (as in the earlier example)
 
 ## License
-  > [GPLv2](http://www.gnu.org/licenses/gpl-2.0.txt)
+  > [GPLv3](http://www.gnu.org/licenses/gpl-3.0.txt)
   > Copyright (c) 2014, Warren Bank
