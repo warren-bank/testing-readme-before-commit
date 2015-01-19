@@ -142,31 +142,30 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
       >  > default: `true`
       >
       >  * true:<br>
-      >    Builds an HTML DOM structure that supports presenting the data within a collapsible tree.
+      >    builds an HTML DOM structure that supports presenting the data within a collapsible tree
       >  * false:<br>
-      >    Filters the JSON data through `js-beautify`, and outputs into a `<pre>` DOM element.
+      >    filters the JSON data through `js-beautify`, and outputs into a `<pre>` DOM element
       >
-      >* expand all nodes
+      >* Expand All Nodes
+      >  > default: `false`
       >
-      >  initialize all collapsible tree nodes to an expanded state (during page load)?
+      >  * true:<br>
+      >    during page load, initialize all collapsible tree nodes to an expanded state
+      >  * false:<br>
+      >    during page load, initialize only the root tree node to an expanded state
       >
-      >  > default: false
-      >
-      >* choice of color scheme
+      >* Theme
+      >  > default: `'solarized_dark'`
       >
       >  options consist of those provided by [highlight.js](https://github.com/isagalaev/highlight.js/tree/master/src/styles)
-      >
-      >  > default: 'solarized_dark'
 
     * Optional Features
 
-      >* use non-native JSON parser to support numbers that are too large to represent using primitive JavaScript data types
+      >* Use non-native JSON parser to support numbers that are too large to represent using primitive JavaScript data types
+      >  > default: `true`
       >
-      >  > default: true
-      >
-      >* display JSON syntax error when encountered by the JSON parser
-      >
-      >  > default: true
+      >* Display JSON syntax error when encountered by the JSON parser
+      >  > default: `true`
 
   * Display: Data Values
 
@@ -190,39 +189,34 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
     * CSS
 
       >* font-family
+      >  > default: `''`
       >
       >  the (internal) stylesheet assigns a default value.<br>
       >  this preference is optional;<br>
       >  if assigned a value, it will override the stylesheet.
       >
-      >  > default: `''`
-      >
       >* font-size
-      >
-      >  units: px
-      >
       >  > default: `13`
       >
+      >  units: `px`
+      >
       >* line-height
-      >
-      >  units: em
-      >
       >  > default: `2`
       >
+      >  units: `em`
+      >
       >* padding around the `<body>`
-      >
-      >  units: em
-      >
       >  > default: `1`
+      >
+      >  units: `em`
       >
       >* width of indentation for expanded children
-      >
-      >  units: em
-      >
       >  > default: `1`
-      >  >
+      >
+      >  units: `em`
+      >
       >  > **NOTE:**<br>
-      >  > `1.5`em is ADDED to the value specified through this setting.<br>
+      >  > `1.5em` is ADDED to the value specified through this setting.<br>
       >  > This is the width required to ensure the expand/collapse button can be properly displayed.
 
 ## Examples
