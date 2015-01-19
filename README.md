@@ -161,6 +161,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
   * Display: Data Values
 
     * Strings
+
       >* `[false]` replace (`\n`) newline with HTML: `<br>` tag
       >
       >* `[false]` replace (`\t`) tab with 4 spaces
