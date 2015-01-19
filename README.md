@@ -166,15 +166,15 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
 
       >* `[false]` replace (`\n`) newline with HTML: `<br>` tag
       >* `[false]` replace (`\t`) tab with 4 spaces
-      >* `[true] ` replace urls with HTML: `<a>` tag
-      >* `[true] ` escape (`\` &#8594; `\\`) back-slash
+      >* `[true]`&nbsp; replace urls with HTML: `<a>` tag
+      >* `[true]`&nbsp; escape (`\` &#8594; `\\`) back-slash
       >* `[false]` escape (`/` &#8594; `\/`) forward-slash
-      >* `[true] ` escape (`"` &#8594; `\"`) double quote
-      >* `[true] ` escape (not visible &#8594; `\r`) carriage return
-      >* `[true] ` escape (not visible &#8594; `\n`) line feed
-      >* `[true] ` escape (not visible &#8594; `\t`) tab
-      >* `[true] ` escape (not visible &#8594; `\f`) form feed
-      >* `[true] ` escape (not visible &#8594; `\b`) backspace
+      >* `[true]`&nbsp; escape (`"` &#8594; `\"`) double quote
+      >* `[true]`&nbsp; escape (not visible &#8594; `\r`) carriage return
+      >* `[true]`&nbsp; escape (not visible &#8594; `\n`) line feed
+      >* `[true]`&nbsp; escape (not visible &#8594; `\t`) tab
+      >* `[true]`&nbsp; escape (not visible &#8594; `\f`) form feed
+      >* `[true]`&nbsp; escape (not visible &#8594; `\b`) backspace
       >* `[false]` escape (unicode representation &#8594; `\uNNNN`) non-ascii characters
 
   * Display: Styles
