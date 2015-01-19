@@ -122,8 +122,11 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
         * note that:
             * order of the `control tokens` doesn't matter
             * they are both case insensitive
-
               > the pretty capitalization is just for the README
+
+            * if the HTTP response includes a `content-disposition` header, then the browser will prompt to save the JSON data.. rather than allowing it to be displayed in-browser by the add-on. When this occurs, the most general-purpose work around is to employ an additional add-on that is better suited to intercepting and conditionally modifying HTTP headers. My suggestions would be:
+              * [Open In Browser](https://addons.mozilla.org/en-us/firefox/addon/open-in-browser/)<br>adds additional options to the browser's "save as" dialog window, which allows the user to choose on a per-response basis how they would like to proceed
+              * [moz-rewrite](https://addons.mozilla.org/en-US/firefox/addon/moz-rewrite-js/)<br>provides a rules engine for conditionally modifying HTTP headers, which allows the user to add a [properly configured rule](https://github.com/warren-bank/moz-rewrite/blob/js/data/recipe-book/response/disable%20CSP.js) that will automatically rewrite the particular response headers when JSON data is being requested
 
 ## User Preferences:
 
