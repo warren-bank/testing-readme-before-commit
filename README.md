@@ -24,6 +24,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
     >* specifically, only its css files are used
 
   * [js-beautify](https://github.com/beautify-web/js-beautify) is used to add whitespace for readability when syntax highlighting is turned off
+    >* the JSON text is piped through this library and displayed within a `<pre>` tag
 
   * [bignumber.js](https://github.com/MikeMcl/bignumber.js) and [json-bigint](https://github.com/sidorares/json-bigint) are used to provide an alternate JSON parser
     >* this parser provides a way to work around the potential pitfall that:
