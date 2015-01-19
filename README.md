@@ -11,7 +11,8 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
     * without any modifier key:<br>
       the action is applied to the selected tree node
     * while pressing any of the following modifier keys: `Ctrl` or `Shift`<br>
-      the action is applied to the selected tree node, as well as recursively to all nodes that descend from the selected tree node
+      the action is applied to the selected tree node,<br>
+      as well as recursively to all nodes that descend from the selected tree node
 
 ## Summary
 
