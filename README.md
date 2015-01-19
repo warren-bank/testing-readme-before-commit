@@ -187,31 +187,31 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
       >  this preference is optional;<br>
       >  if assigned a value, it will override the stylesheet.
       >
-      >  > default: ''
+      >  > default: `''`
       >
       >* font-size
       >
       >  units: px
       >
-      >  > default: 13
+      >  > default: `13`
       >
       >* line-height
       >
       >  units: em
       >
-      >  > default: 2
+      >  > default: `2`
       >
       >* padding around the `<body>`
       >
       >  units: em
       >
-      >  > default: 1
+      >  > default: `1`
       >
       >* width of indentation for expanded children
       >
       >  units: em
       >
-      >  > default: 1
+      >  > default: `1`
       >  >
       >  > **NOTE:**<br>
       >  > 1.5em is ADDED to the value specified through this setting.<br>
