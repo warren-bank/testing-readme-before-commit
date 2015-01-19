@@ -138,12 +138,13 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
 
     * Syntax Highlights
 
-      >* on/off toggle
+      >* Enable
+      >  > default: `true`
       >
-      >  on: Builds an HTML DOM structure that supports presenting the data within a collapsible tree.<br>
-      >  off: Filters the JSON data through `js-beautify`, and outputs into a `<pre>` DOM element.
-      >
-      >  > default: on
+      >  * true:<br>
+      >    Builds an HTML DOM structure that supports presenting the data within a collapsible tree.
+      >  * false:<br>
+      >    Filters the JSON data through `js-beautify`, and outputs into a `<pre>` DOM element.
       >
       >* expand all nodes
       >
