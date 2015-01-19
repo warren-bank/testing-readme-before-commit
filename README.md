@@ -214,7 +214,7 @@ Firefox add-on that displays JSON data in a collapsible tree structure with synt
       >  > default: `1`
       >  >
       >  > **NOTE:**<br>
-      >  > 1.5em is ADDED to the value specified through this setting.<br>
+      >  > `1.5`em is ADDED to the value specified through this setting.<br>
       >  > This is the width required to ensure the expand/collapse button can be properly displayed.
 
 ## Examples
