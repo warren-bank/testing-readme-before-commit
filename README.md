@@ -62,7 +62,7 @@
 ## Additional Notes
 
 * After running a PDF file through (version [2](https://github.com/warren-bank/remove-it-ebooks-pdf-watermark/tree/strategy/2-remove-selective-obj) of) the perl script:
-  * a PDF viewer (ex: "PDF-XChange Viewer") should report that:
+  * a PDF viewer (ex: [_"PDF-XChange Viewer"_](http://portableapps.com/apps/office/pdf-xchange-portable)) should report that:
 
     ```
     This document "out.pdf" has errors.
@@ -72,4 +72,7 @@
     
     It is recommended you re-save this document.
     ```
-  * following its advice and resaving the PDF document (ie: `File > Save As..`) will clean out all of the internal references to the removed `obj` blocks, which will farther reduce the file size by a significant amount.
+* After following the recommendation given by the viewer and resaving the PDF document (ie: `File > Save As..`):
+  * all of the PDF's internal references to the removed `obj` blocks are cleaned out
+  * the file size is farther reduce by a significant amount
+  * the file won't generate any errors when opened in a PDF viewer
