@@ -9,6 +9,12 @@ Command-line tool to:
   where each address represents a deployment of the contract onto that blockchain,<br>
   and store this metadata as a hashtable in a (small) JSON file
 
+#### Installation:
+
+```bash
+npm install -g @warren-bank/dapp-deploy
+```
+
 #### Simple Example:
 
 ```bash
