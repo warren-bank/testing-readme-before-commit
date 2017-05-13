@@ -153,7 +153,8 @@ license: GPLv2
     * Cons:
       * "Truffle requires you to have a Migrations contract in order to use the Migrations feature."
       * Personally, I don't plan to use Truffle to either test Solidity contracts or write front-end Dapps.<br>
-        Though it could be used solely for generating deployment metadata that is consumed elsewhere,<br>
+        Though it could be used solely for generating deployment metadata,<br>
+        which could then be consumed elsewhere,<br>
         I don't think that makes for a pleasant (or efficient) workflow.
 
 #### Legal:
