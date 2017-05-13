@@ -2,7 +2,9 @@
 
 #### Description:
 
-Command-line tool to deploy Ethereum contracts to a blockchain
+Command-line tool to:
+* deploy Ethereum contracts to a blockchain
+* save addresses (of deployed contracts) to JSON files
 
 #### Usage:
 
