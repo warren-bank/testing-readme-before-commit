@@ -4,7 +4,10 @@
 
 Command-line tool to:
 * deploy Ethereum contracts to a blockchain
-* save addresses (of deployed contracts) to JSON files
+* for each contract,<br>
+  associate Ethereum network IDs to a list of addresses,<br>
+  where each address represents a deployment of the contract onto that blockchain,<br>
+  and store this metadata as a hashtable in a (small) JSON file
 
 #### Usage:
 
