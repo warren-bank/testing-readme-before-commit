@@ -9,7 +9,19 @@ Command-line tool to:
   where each address represents a deployment of the contract onto that blockchain,<br>
   and store this metadata as a hashtable in a (small) JSON file
 
-#### Usage:
+#### Simple Example:
+
+```bash
+lxterminal -e testrpc
+
+mkdir ~/my_dapp
+cd ~/my_dapp
+
+dapp init
+dapp deploy
+```
+
+#### Options:
 
 ```bash
 $ dapp-deploy --help
@@ -135,7 +147,7 @@ license: GPLv2
     * most likely, this blockchain is a short-lived instance of `testrpc`;<br>
       in which case, redeployment is necessary each time the RPC server is restarted.
   * the addresses of these deployed contracts need to be saved,<br>
-    and made available to the Dapp as it is being developed and tested.
+    and made available to the Dapp while it is being developed and tested.
 * I've found the existing tools to be somewhat lacking for this purpose.<br>
   It's very possible that I'm mistaken and have re-invented the wheel.
   * `dapp` provides [`seth`](https://github.com/dapphub/seth) as its command-line tool to perform RPC calls.<br>
