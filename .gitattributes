@@ -1,3 +1,5 @@
-*.* linguist-language=SQLPL
+*.html linguist-vendored=true
+
+* linguist-language=SQLPL
 
 # https://github.com/github/linguist/blob/master/lib/linguist/languages.yml
