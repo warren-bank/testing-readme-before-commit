@@ -1,186 +1,121 @@
-### [dapp-deploy](https://github.com/warren-bank/dapp-deploy)
+### [react-trix-editor](https://github.com/warren-bank/react-trix-editor)
 
-#### Description:
+React component for [Basecamp's _Trix_ rich text editor](https://github.com/basecamp/trix)
 
-Command-line tool to:
-* deploy Ethereum contracts to a blockchain
-* for each contract,<br>
-  associate Ethereum network IDs to a list of addresses,<br>
-  where each address represents a deployment of the contract onto that blockchain,<br>
-  and store this metadata as a hashtable in a (small) JSON file
+#### Origin story
+
+* I'm adding an HTML editor to [Secure-Webmail](https://github.com/warren-bank/Secure-Webmail)
+  * did a quick survey of what's available:
+    | library       | size (min+gzip) | size (min) | jquery | bootstrap | react | link |
+    |---------------|-----------------|------------|--------|-----------|-------|------|
+    | pell          | 1.38kB          | 3.54kB     |        |           |       | https://github.com/jaredreich/pell |
+    | squire        | 16kB            | 49kB       |        |           |       | https://github.com/neilj/Squire |
+    | medium-editor | 27kB            | 105kB      |        |           |       | https://github.com/yabwe/medium-editor |
+    | quill         | 43kB            | 205kB      |        |           |       | https://github.com/quilljs/quill |
+    | trix          | 47kB            | 204kB      |        |           |       | https://github.com/basecamp/trix |
+    | ckeditor      | 163kB           | 551kB      |        |           |       | https://ckeditor.com |
+    | trumbowyg     | 8kB             | 23kB       | x      |           |       | https://github.com/Alex-D/Trumbowyg |
+    | summernote    | 26kB            | 93kB       | x      | x         |       | https://github.com/summernote/summernote |
+    | draft         | 46kB            | 147kB      |        |           | x     | https://github.com/facebook/draft-js |
+    | froala        | 52kB            | 186kB      | x      |           |       | https://github.com/froala/wysiwyg-editor |
+    | tinymce       | 157kB           | 491kB      | x      |           |       | https://github.com/tinymce/tinymce |
+  * ruled out the ones that depend on _jQuery_
+  * tried out the rest
+    * _Trix_ is the only html editor that could properly generate nested lists
+
+#### What this is, and what this is not..
+
+* _Trix_ uses a very non-opinionated approach
+  * the library provides a lot of low-level events to enable deep customization, but doesn't provide much high-level functionality out-of-the-box
+* the purpose of this library is to:
+  * provide a React component wrapper around _Trix_
+  * encapsulate all of the customizations that I want for my particular use-case
+  * share the result for anyone who has a similar need
+
+#### Customizations
+
+* file attachments:
+  * are __NOT__ uploaded to any server
+  * the only files of any interest are images, which are embedded (using a `data:` URI)
+* additional toolbar buttons:
+  * Embed an image
+    * opens a file-chooser dialog
+    * embeds the image(s)
+  * Horizontal rule
+    * adds an `<hr />` tag
+* behavior:
+  * the editor is a fixed height, and a vertical scrollbar is used (when necessary)
+  * the editor automatically scrolls, such that the cursor is visible in the middle of the viewport, when:
+    * image(s) are embedded
+    * rich text content is pasted into the editor
+
+#### React props
+
+* `set_exportHTML`
+* `set_exportDocument`
+* `document`
+
+#### Anti-Pattern
+
+* `set_exportHTML`
+* `set_exportDocument`
+  * these are both functions passed to `TrixEditor`
+  * `TrixEditor` calls these functions when:
+    * componentDidMount
+    * componentDidUpdate
+  * `TrixEditor` passes a (corresponding) function back to the parent component
+    * after the parent component has received a reference to these functions, they can be called to obtain (corresponding) data from the `TrixEditor` component
+
+* specifically:
+  * `set_exportHTML` is passed a reference to the function: `exportHTML`
+    * `exportHTML` returns: a string of HTML text
+  * `set_exportDocument` is passed a reference to the function: `exportDocument`
+    * `exportDocument` returns: an immutable Object representation of the current state of the document in the editor
+      * the data type of this immutable Object is the same as the React prop: `document`
 
 #### Installation:
 
 ```bash
-npm install -g @warren-bank/dapp-deploy
+npm install --save @warren-bank/react-trix-editor
 ```
 
-#### Simple Example:
+#### Dependencies:
 
-```bash
-lxterminal -e testrpc
+* I chose to __not__ bundle _Trix_ with this component
+  * it expects the global: `window.Trix`
+    * this can be satisfied in 1 of 2 ways:
+      * include _Trix_ externally
+        * example: from a CDN
+          `&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.0.0/trix.css" /&gt;`
+          `&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.0.0/trix.js"&gt;&lt;/script&gt;`
+      * include _Trix_ internally
+        * add as a project dependency
+        * in the script used as the entry-point for Webpack:
+          `const Trix = require('trix'); require('trix/dist/trix.css');`
+          `window.Trix = Trix`
 
-mkdir ~/my_dapp
-cd ~/my_dapp
+#### Demos:
 
-dapp init
-dapp deploy
-```
+1. [include _Trix_ externally](https://github.com/warren-bank/react-trix-editor/blob/master/demos/1-trix-global/src/index.js)
+   [run demo](https://cdn.jsdelivr.net/gh/warren-bank/react-trix-editor/demos/1-trix-global/dist/index.html)
+2. [include _Trix_ internally](https://github.com/warren-bank/react-trix-editor/blob/master/demos/2-trix-bundle/src/index.js)
+   [run demo](https://cdn.jsdelivr.net/gh/warren-bank/react-trix-editor/demos/2-trix-bundle/dist/index.html)
 
-#### Options:
+__notes:__
 
-```bash
-$ dapp-deploy --help
-
-Tool to use in combination with 'dapphub/dapp'.
-Uses artifacts generated by "dapp build".
-Deploys compiled contract(s) to an Ethereum blockchain.
-
-Each deployed contract address is saved to a JSON data file.
-Format is a hash table:
-    Ethereum network ID => array of addresses
-
-Ethereum network ID represents a unique Ethereum blockchain.
-Enables deployment to multiple chains.
-
-A frontend Dapp can determine the current Ethereum network ID.
-For each contract, the Dapp can perform the necessary lookup
-in the corresponding hash table of deployment addresses.
-Using web3.js, only 2 data files are needed per contract:
-    ./out/CONTRACTNAME.abi
-    ./out/CONTRACTNAME.deployed
-
-Usage: dapp-deploy [options]
-
-
-Options:
-  --all                         Deploy all contracts   [boolean] [default: true]
-  -c, --contract                Deploy only specified contract(s)        [array]
-  --params                      Parameter(s) to pass to contract constructor(s)
-                                note: In most situations, each contract having a
-                                constructor that accepts input parameters should
-                                be deployed individually, rather than in a
-                                batch. Please be careful.  [array] [default: []]
-  --value, --wei                Value (wei) to pass to contract constructor(s)
-                                note: In most situations, each contract having a
-                                payable constructor should be deployed
-                                individually, rather than in a batch. Please be
-                                careful.                   [number] [default: 0]
-  --gas                         Gas to send with each transaction
-                                note: In most situations, it would be better to
-                                not use this option. By default, the amount of
-                                gas sent is an estimate.                [number]
-  -h, --host                    Ethereum JSON-RPC server hostname
-                                                 [string] [default: "localhost"]
-  -p, --port                    Ethereum JSON-RPC server port number
-                                                        [number] [default: 8545]
-  --tls, --https, --ssl         Require TLS handshake (https:) to connect to
-                                Ethereum JSON-RPC server
-                                                      [boolean] [default: false]
-  -a, --aa, --account_address   Address of Ethereum account to own deployed
-                                contracts                               [string]
-  -A, --ai, --account_index     Index of Ethereum account to own deployed
-                                contracts.
-                                note: List of available/unlocked accounts is
-                                determined by Ethereum client.
-                                                           [number] [default: 0]
-  -i, --input_directory         Path to input directory. All compiled contract
-                                artifacts are read from this directory.
-                                note: The default path assumes that the current
-                                directory is the root of a compiled "dapp"
-                                project.             [string] [default: "./out"]
-  -o, --od, --output_directory  Path to output directory. All
-                                "contract.deployed" JSON files will be written
-                                to this directory.   [string] [default: "./out"]
-  -O, --op, --output_pattern    Pattern to specify absolute output file path.
-                                The substitution pattern "{{contract}}" will be
-                                interpolated.
-                                note: The substitution pattern is required.
-                                                                        [string]
-  --help                        Show help                              [boolean]
-
-Examples:
-  dapp-deploy                               deploy all contracts via:
-                                            "http://localhost:8545" using
-                                            account index #0
-  dapp-deploy -A 1                          deploy all contracts via:
-                                            "http://localhost:8545" using
-                                            account index #1
-  dapp-deploy -h                            deploy all contracts via:
-  "mainnet.infura.io" -p 443 --ssl -a       "https://mainnet.infura.io:443"
-  "0xB9903E9360E4534C737b33F8a6Fef667D5405  using account address
-  A40"                                      "0xB9903E9360E4534C737b33F8a6Fef667D
-                                            5405A40"
-  dapp-deploy -c Foo                        deploy contract: "Foo"
-  dapp-deploy -c Foo --params bar           deploy contract: "Foo"
-  baz 123 --value 100                       call: "Foo('bar', 'baz', 123)"
-                                            pay to contract: "100 wei"
-  dapp-deploy -c Foo Bar Baz                deploy contracts:
-                                            ["Foo","Bar","Baz"]
-  dapp-deploy -c Foo -o                     generate:
-  "~/Dapp_frontend/contracts"               "~/Dapp_frontend/contracts/Foo.deplo
-                                            yed"
-  dapp-deploy -c Foo -O                     generate:
-  "~/Dapp_frontend/contracts/{{contract}}.  "~/Dapp_frontend/contracts/Foo.deplo
-  deployed.json"                            yed.json"
-  dapp-deploy -c Foo -i                     deploy contract:
-  "~/Dapp_contracts/out" -O                 "~/Dapp_contracts/out/Foo.bin"
-  "./contracts/{{contract}}.deployed.json"  and generate:
-                                            "./contracts/Foo.deployed.json"
-
-copyright: Warren Bank <github.com/warren-bank>
-license: GPLv2
-```
-
-#### Notes:
-
-* This tool is standalone.
-* It is intended to complement the [`dapphub/dapp`](https://github.com/dapphub/dapp) toolchain,<br>
-  but it can also work directly with Solidity compiler (solc) output.
-* When `dapp` is installed, this tool can be invoked by the command: `dapp deploy [options]`
-* When used standalone, it can be invoked by the command: `dapp-deploy [options]`
-
-#### Commentary:
-
-* I'm fairly new to the Ethereum ecosystem.
-* I've inspected various tools that assist with the development and testing of Solidity contracts
-  * [Truffle](https://github.com/trufflesuite/truffle)
-  * [Dapple](https://github.com/dapphub/dapple)
-  * [Dapp](https://github.com/dapphub/dapp)
-* I prefer `dapp` for the ability of its testing harness to debug deeply nested throws
-* After a Solidity contract (or system of contracts) is ready for a front-end UI
-  * the contracts need to be deployed to an Ethereum blockchain
-    * most likely, this blockchain is a short-lived instance of `testrpc`;<br>
-      in which case, redeployment is necessary each time the RPC server is restarted.
-  * the addresses of these deployed contracts need to be saved,<br>
-    and made available to the Dapp while it is being developed and tested.
-* I've found the existing tools to be somewhat lacking for this purpose.<br>
-  It's very possible that I'm mistaken and have re-invented the wheel.
-  * `dapp` provides [`seth`](https://github.com/dapphub/seth) as its command-line tool to perform RPC calls.<br>
-    It has many more features than this tool, but I find it lacking (and difficult to use) in a lot of ways.<br>
-    Hopefully, it will continue to improve over time.
-  * `dapple` provides [`DappleScript`](http://dapple.readthedocs.io/en/master/dapplescript/) as its Solidity-like language in which to write "migrations".<br>
-    These migration scripts can be run on the command-line.<br>
-    My impression is that it's a really nice system.<br>
-    My only issue is that the scripting environment is very limiting.
-    * can't work with complex data types
-    * can't parse (or stringify) JSON data
-    * can't write to the file system
-  * `truffle` provides [`migrations`](http://truffleframework.com/docs/getting_started/migrations).<br>
-    I haven't spent much time looking at this.<br>
-    Initial impressions:
-    * Pros:
-      * scripting is done in a nodeJS javascript environment
-      * can use a chain of promises to inspect the "instance" of each deployed contract
-      * supports linking (which is something I may need to add)
-    * Cons:
-      * "Truffle requires you to have a Migrations contract in order to use the Migrations feature."
-      * Personally, I don't plan to use Truffle to either test Solidity contracts or write front-end Dapps.<br>
-        Though it could be used solely for generating deployment metadata,<br>
-        which could then be consumed elsewhere,<br>
-        I don't think that makes for a pleasant (or efficient) workflow.
+* both demos are nearly identical; they only differ in the way _Trix_ is included
+* in addition to rendering an instance of the `TrixEditor` component:
+  * the _App_ component sets 2 interval timers:
+    * every 5 seconds:
+      * a reference to the immutable Object representation of the current state of the document in the editor is stored in a class instance property
+    * every 1 second:
+      * this class instance property is saved to _state_
+      * the `TrixEditor` component will update _only if_ `this.state.document` has changed
+        * when this does occur, the position of the cursor in the editor jumps to the beginning
+          * makes the demo(s) annoying to use, but does effectively prove that the feature is working
+          * this methodology would never be used in a real app; it's entirely contrived
 
 #### Legal:
 
 * copyright: [Warren Bank](https://github.com/warren-bank)
-* license: [GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt)
+* license: [GPL-2.0](https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt)
