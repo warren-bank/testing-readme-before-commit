@@ -88,16 +88,16 @@ npm install --save @warren-bank/react-trix-editor
       * include _Trix_ externally
         * example: from a CDN
           ```html
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.0.0/trix.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.0.0/trix.js"></script>
-```
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.0.0/trix.css" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.0.0/trix.js"></script>
+          ```
       * include _Trix_ internally
         * add as a project dependency
         * in the script used as the entry-point for Webpack:
           ```javascript
-const Trix = require('trix'); require('trix/dist/trix.css');
-window.Trix = Trix
-```
+            const Trix = require('trix'); require('trix/dist/trix.css');
+            window.Trix = Trix
+          ```
 
 #### Demos:
 
