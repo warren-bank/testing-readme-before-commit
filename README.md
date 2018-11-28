@@ -6,6 +6,7 @@ React component for [Basecamp's _Trix_ rich text editor](https://github.com/base
 
 * I'm adding an HTML editor to [Secure-Webmail](https://github.com/warren-bank/Secure-Webmail)
   * did a quick survey of what's available:
+
     | library       | size (min+gzip) | size (min) | jquery | bootstrap | react | link |
     |---------------|-----------------|------------|--------|-----------|-------|------|
     | pell          | 1.38kB          | 3.54kB     |        |           |       | https://github.com/jaredreich/pell |
