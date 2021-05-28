@@ -1,0 +1,130 @@
+
+body {
+  background-color: white;
+}
+
+label {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+}
+
+
+select {
+   font-family: Arial, Helvetica, sans-serif;
+   font-size: 15px;
+   color: #747474;
+   width: 240px;
+   height: 44px;
+   overflow: hidden;
+   background: no-repeat right #ddd;
+   border: 1px solid #ccc;
+}
+
+h3 {
+   font-family: Arial, Helvetica, sans-serif;
+   font-size: 20px;
+}
+
+span {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#player-container {
+  position: absolute;
+}
+
+.hlword {
+  color: #0089FF;
+  font-weight: bold;
+  background-color: #FFFFFF;
+}
+
+.container {
+  width: 100%;
+  margin: auto;
+}
+
+.player-session {
+  width: 50%;
+  float: left;
+}
+
+.code-session {
+  background: #232323;
+}
+
+/*Begin Custom labs*/
+.vop-labs-button {
+   font-family: Roboto;
+   font-size: 14px;
+   color: #ffffff;
+   width: 10%;
+   height: 44px;
+   overflow: hidden;
+   vertical-align: bottom;
+   background: no-repeat right #03a9f4;
+   border: 1px solid #ccc;
+   border-radius: 8px;
+   outline: 0px;
+}
+
+.vop-normal-analyticsoverlay {
+  font-size: x-small;
+}
+.vop-analyticsoverlay-menu {
+  background-color:rgba(0, 0, 0, 0.5);
+  color:white;
+  font-weight: normal;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  z-index: 201;
+  position: absolute;
+  top: 10px;
+  left: 5px;
+  width: 30em;
+  padding-left: 2%;
+  overflow-y: auto;
+  display: none;
+  pointer-events: none;
+ }
+
+.vop-analyticsoverlay-tag {
+  display: inline-block;
+  min-width: 120px;
+  text-align:right;
+}
+
+.vop-url-div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  pointer-events: auto;
+}
+
+.vop-url-div:hover {
+  overflow: visible;
+  white-space: normal;
+  word-break: break-all;
+}
+
+.vop-test-input {
+  width: 60%;
+  height: 40px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  padding-left: 6px;
+  padding-right: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.vop-test-loadBtn {
+  width: 120px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  outline: none;
+}
+.vop-test-loadBtn:hover {
+  cursor: pointer;
+}
+/* End custom labs */

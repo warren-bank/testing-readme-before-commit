@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>WebCast-Reloaded</title>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon" />
+
+  <link rel="stylesheet" href="css/material-icons.css" />
+  <link rel="stylesheet" href="css/webcast-reloaded.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/voplayer-ui.min.css" />
+
+  <!-- google chromecast lib -->
+  <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+
+  <!--
+  <script src="js/plugins/voplayer-analytics.min.js"></script>
+  -->
+  <script src="js/plugins/voplayer-castsender.min.js"></script>
+  <script src="js/plugins/voplayer-captionParser.min.js"></script>
+  <script src="js/plugins/voplayer-srtParser.min.js"></script>
+  <script src="js/plugins/voplayer-vttParser.min.js"></script>
+  <script src="js/plugins/voplayer-ttmlParser.min.js"></script>
+  <script src="js/plugins/voplayer-fccStyle.min.js"></script>
+  <script src="js/plugins/voplayer-subtitles.min.js"></script>
+
+  <script src="js/voplayer.min.js"></script>
+  <script src="js/voplayer-ui.min.js"></script>
+  <script src="js/tool.js"></script>
+  <script src="js/webcast-reloaded.js"></script>
+</head>
+<body>
+  <div class="URL-entry-form">
+    <div>URL to video:</div>
+    <div><input type="text" id="URL_video" /></div>
+    <div>URL to external subtitles:</div>
+    <div><input type="text" id="URL_subtitle" /></div>
+    <button>Load Player</button>
+  </div>
+  <div class="webcast-video-player" style="display:none">
+    <div id="video-player">
+      <div id="video-player-container"></div>
+    </div>
+    <div class="video-player-info">
+      <i class="material-icons" id="destroy_videoplayer">highlight_off</i>
+      <span class="video-player-info-status"></span>
+      <div class="right">
+        <div id="seek_to">
+          <input type="text" id="seek_to_hh" size="2" placeholder="HH" /> :
+          <input type="text" id="seek_to_mm" size="2" placeholder="MM" /> :
+          <input type="text" id="seek_to_ss" size="4" placeholder="SS" />
+          <button id="seek_to_time">Seek</button>
+        </div>
+        <i class="material-icons" id="toggle_chromecast_connection_state">cast</i>
+      </div>
+    </div>
+</body>
+</html>
